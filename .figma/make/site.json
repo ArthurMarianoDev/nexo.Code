@@ -1,0 +1,10 @@
+{
+  "description": "Create stunning, professional websites and landing pages tailored for any business type, enhancing online presence and engagement.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

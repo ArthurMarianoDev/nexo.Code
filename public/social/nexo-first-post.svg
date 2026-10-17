@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#171C22"/>
+      <stop offset="1" stop-color="#0C0F13"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#A8FF47" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#A8FF47" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="54" height="54" patternUnits="userSpaceOnUse">
+      <path d="M54 0H0V54" fill="none" stroke="#FFFFFF" stroke-opacity=".035" stroke-width="1"/>
+    </pattern>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="24" stdDeviation="30" flood-color="#000000" flood-opacity=".45"/>
+    </filter>
+  </defs>
+
+  <rect width="1080" height="1080" fill="#080A0D"/>
+  <rect width="1080" height="1080" fill="url(#grid)"/>
+  <circle cx="980" cy="180" r="390" fill="url(#glow)"/>
+
+  <g font-family="Manrope, Arial, sans-serif">
+    <text x="76" y="104" fill="#F7F9F4" font-size="42" font-weight="800" letter-spacing="-3">nexo<tspan fill="#A8FF47">.</tspan></text>
+    <text x="1004" y="99" text-anchor="end" fill="#7F8791" font-size="16" font-weight="600" letter-spacing="3">ESTÚDIO DIGITAL · 001</text>
+
+    <rect x="76" y="158" width="282" height="42" rx="21" fill="#A8FF47"/>
+    <circle cx="99" cy="179" r="5" fill="#080A0D"/>
+    <text x="116" y="185" fill="#080A0D" font-size="15" font-weight="700" letter-spacing="2">OLÁ, SOMOS A NEXO</text>
+
+    <text x="76" y="318" fill="#F7F9F4" font-size="82" font-weight="600" letter-spacing="-5">
+      <tspan x="76" dy="0">Sites que não só</tspan>
+      <tspan x="76" dy="86">impressionam.</tspan>
+      <tspan x="76" dy="86" fill="#A8FF47">Vendem.</tspan>
+    </text>
+    <text x="80" y="612" fill="#9CA3AD" font-size="25" font-weight="400">
+      <tspan x="80" dy="0">Estratégia, design e tecnologia para transformar</tspan>
+      <tspan x="80" dy="38">a presença digital da sua empresa.</tspan>
+    </text>
+
+    <g transform="translate(80 731) rotate(-2)" filter="url(#shadow)">
+      <rect width="740" height="246" rx="18" fill="url(#panel)" stroke="#30363F" stroke-width="2"/>
+      <rect width="740" height="42" rx="18" fill="#1D2229"/>
+      <rect y="24" width="740" height="18" fill="#1D2229"/>
+      <circle cx="24" cy="21" r="5" fill="#4A525D"/>
+      <circle cx="42" cy="21" r="5" fill="#4A525D"/>
+      <circle cx="60" cy="21" r="5" fill="#4A525D"/>
+      <rect x="280" y="13" width="180" height="15" rx="7.5" fill="#292F37"/>
+      <text x="32" y="82" fill="#F7F9F4" font-size="15" font-weight="700">sua marca<tspan fill="#A8FF47">.</tspan></text>
+      <text x="32" y="142" fill="#F7F9F4" font-size="34" font-weight="600" letter-spacing="-2">O próximo nível</text>
+      <text x="32" y="178" fill="#F7F9F4" font-size="34" font-weight="600" letter-spacing="-2">começa aqui.</text>
+      <rect x="32" y="199" width="138" height="27" rx="13.5" fill="#A8FF47"/>
+      <text x="101" y="217" text-anchor="middle" fill="#080A0D" font-size="10" font-weight="700">COMEÇAR AGORA →</text>
+      <circle cx="605" cy="150" r="78" fill="#A8FF47" fill-opacity=".1" stroke="#A8FF47" stroke-opacity=".35"/>
+      <path d="M571 151H638M615 127L639 151L615 175" fill="none" stroke="#A8FF47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <g transform="translate(774 719) rotate(7)">
+      <rect width="230" height="230" rx="18" fill="#A8FF47"/>
+      <text x="28" y="53" fill="#080A0D" font-size="13" font-weight="700" letter-spacing="2">DESIGN + RESULTADO</text>
+      <text x="28" y="162" fill="#080A0D" font-size="82" font-weight="700" letter-spacing="-6">01</text>
+      <path d="M161 186H201M186 171L201 186L186 201" fill="none" stroke="#080A0D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <text x="80" y="1031" fill="#7F8791" font-size="15" font-weight="600" letter-spacing="2">NEXO.STUDIO</text>
+    <text x="1000" y="1031" text-anchor="end" fill="#7F8791" font-size="15" font-weight="600" letter-spacing="2">SITES · LANDING PAGES · E-COMMERCE</text>
+  </g>
+</svg>

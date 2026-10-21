@@ -68,18 +68,72 @@ const projects = [
     title: "Clínica Aurea",
     result: "+184% em agendamentos",
     tone: "aurea",
+    headline: "Cuidar é estar presente.",
+    description:
+      "Site institucional com uma jornada acolhedora e agendamento simplificado para uma clínica multidisciplinar.",
+    services: ["Estratégia", "UI Design", "Desenvolvimento"],
+    year: "2025",
+    url: "https://example.com",
   },
   {
     category: "TECNOLOGIA B2B",
     title: "Nuvem OS",
     result: "3.2x mais conversões",
     tone: "nuvem",
+    headline: "Sua operação. Sem limites.",
+    description:
+      "Landing page de produto que traduz uma plataforma complexa em uma proposta clara, visual e convincente.",
+    services: ["Copywriting", "UI Design", "Desenvolvimento"],
+    year: "2025",
+    url: "https://example.com",
   },
   {
     category: "ARQUITETURA",
     title: "Forma Studio",
     result: "+96% em leads qualificados",
     tone: "forma",
+    headline: "Espaços que respiram.",
+    description:
+      "Portfólio editorial criado para valorizar projetos autorais e transformar visitas em novas oportunidades.",
+    services: ["Direção de arte", "UX Design", "Desenvolvimento"],
+    year: "2024",
+    url: "https://example.com",
+  },
+  {
+    category: "MODA & LIFESTYLE",
+    title: "Mono Objects",
+    result: "+72% no ticket médio",
+    tone: "mono",
+    headline: "Menos ruído. Mais essência.",
+    description:
+      "E-commerce minimalista com foco no produto, na história da marca e em uma compra sem distrações.",
+    services: ["E-commerce", "UI Design", "Desenvolvimento"],
+    year: "2024",
+    url: "https://example.com",
+  },
+  {
+    category: "FINTECH",
+    title: "Pulso",
+    result: "2.8x mais cadastros",
+    tone: "pulso",
+    headline: "Seu dinheiro em movimento.",
+    description:
+      "Experiência digital direta e humana para apresentar uma nova forma de organizar a vida financeira.",
+    services: ["Estratégia", "Produto digital", "Motion"],
+    year: "2024",
+    url: "https://example.com",
+  },
+  {
+    category: "GASTRONOMIA",
+    title: "Casa Ocre",
+    result: "+134% em reservas",
+    tone: "ocre",
+    headline: "Sabores para ficar na memória.",
+    description:
+      "Site sensorial para restaurante autoral, conectando cardápio, ambiente e reserva em poucos passos.",
+    services: ["Direção de arte", "UX Design", "Desenvolvimento"],
+    year: "2023",
+    url: "https://example.com",
   },
 ];
 
@@ -106,7 +160,137 @@ const faqs = [
   },
 ];
 
-function App() {
+function ProjectVisual({
+  project,
+}: {
+  project: (typeof projects)[number];
+}) {
+  return (
+    <div className={`project-visual project-visual--${project.tone}`}>
+      <div className="project-window">
+        <div className="project-window__bar"><span /><span /><span /></div>
+        <div className="project-window__content">
+          <div className="project-mini-nav" />
+          <div className="project-copy">
+            <span>{project.category}</span>
+            <strong>{project.headline}</strong>
+            <i />
+          </div>
+          <div className="project-shape" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PortfolioPage() {
+  useEffect(() => {
+    document.title = "Portfólio — Nexo Studio";
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-ink text-white selection:bg-electric selection:text-ink">
+      <header className="site-header site-header--scrolled">
+        <nav className="shell flex h-20 items-center justify-between" aria-label="Navegação do portfólio">
+          <a className="brand" href="/" aria-label="Nexo, página inicial">
+            nexo<span>.</span>
+          </a>
+          <a className="portfolio-back" href="/">
+            <span aria-hidden="true">←</span> Voltar para o início
+          </a>
+          <a className="button button--small hidden sm:inline-flex" href="/#contato">
+            Começar projeto
+            <Icon name="arrow" className="size-4" />
+          </a>
+        </nav>
+      </header>
+
+      <main>
+        <section className="portfolio-hero">
+          <div className="orb orb--one" />
+          <div className="shell relative z-10">
+            <div className="eyebrow reveal">
+              <span className="eyebrow-dot" />
+              PORTFÓLIO NEXO
+            </div>
+            <div className="portfolio-hero__heading">
+              <h1 className="reveal reveal--delay-1">
+                Projetos que viram<br /><span>resultado.</span>
+              </h1>
+              <p className="reveal reveal--delay-2">
+                Uma seleção de experiências digitais pensadas como produtos:
+                bonitas, funcionais e construídas para alcançar objetivos reais.
+              </p>
+            </div>
+            <div className="portfolio-summary reveal reveal--delay-3">
+              <span>Sites institucionais</span>
+              <span>Landing pages</span>
+              <span>E-commerce</span>
+              <strong>{String(projects.length).padStart(2, "0")} projetos selecionados</strong>
+            </div>
+          </div>
+        </section>
+
+        <section className="portfolio-section">
+          <div className="shell portfolio-grid">
+            {projects.map((project, index) => (
+              <a
+                className="portfolio-card"
+                href={project.url}
+                target="_blank"
+                rel="noreferrer"
+                key={project.title}
+                aria-label={`Abrir projeto ${project.title} em uma nova aba`}
+              >
+                <div className="portfolio-card__visual">
+                  <ProjectVisual project={project} />
+                  <span className="portfolio-card__index">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="portfolio-card__open">
+                    Abrir projeto <Icon name="arrow" className="size-4" />
+                  </span>
+                </div>
+                <div className="portfolio-card__header">
+                  <div>
+                    <p>{project.category}</p>
+                    <h2>{project.title}</h2>
+                  </div>
+                  <span>{project.year}</span>
+                </div>
+                <p className="portfolio-card__description">{project.description}</p>
+                <div className="portfolio-card__meta">
+                  <div>{project.services.map((service) => <span key={service}>{service}</span>)}</div>
+                  <strong>{project.result}</strong>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section className="portfolio-cta">
+          <div className="shell">
+            <p className="kicker">SEU PROJETO PODE SER O PRÓXIMO</p>
+            <h2>Vamos construir algo<br />que dá orgulho de mostrar?</h2>
+            <a className="button" href="mailto:ola@nexo.studio">
+              Falar sobre meu projeto <Icon name="arrow" className="size-5" />
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <footer className="portfolio-footer">
+        <div className="shell footer-bottom">
+          <span>© 2025 Nexo Studio. Todos os direitos reservados.</span>
+          <a href="/">nexo<span>.</span></a>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(0);
   const [scrolled, setScrolled] = useState(false);
@@ -270,33 +454,20 @@ function App() {
                 <p className="kicker">PROJETOS SELECIONADOS</p>
                 <h2>Trabalho bonito.<br />Resultado real.</h2>
               </div>
-              <a className="text-link" href="#contato">
+              <a className="text-link" href="/portfolio" target="_blank" rel="noreferrer">
                 Ver todos os projetos <Icon name="arrow" className="size-4" />
               </a>
             </div>
 
             <div className="project-list">
-              {projects.map((project, index) => (
+              {projects.slice(0, 3).map((project) => (
                 <article className="project-row" key={project.title}>
-                  <div className={`project-visual project-visual--${project.tone}`}>
-                    <div className="project-window">
-                      <div className="project-window__bar"><span /><span /><span /></div>
-                      <div className="project-window__content">
-                        <div className="project-mini-nav" />
-                        <div className="project-copy">
-                          <span>{project.category}</span>
-                          <strong>{index === 0 ? "Cuidar é estar presente." : index === 1 ? "Sua operação. Sem limites." : "Espaços que respiram."}</strong>
-                          <i />
-                        </div>
-                        <div className="project-shape" />
-                      </div>
-                    </div>
-                  </div>
+                  <ProjectVisual project={project} />
                   <div className="project-info">
                     <p>{project.category}</p>
                     <h3>{project.title}</h3>
                     <div><span>RESULTADO</span><strong>{project.result}</strong></div>
-                    <a href="#contato" aria-label={`Conhecer projeto ${project.title}`}>
+                    <a href={project.url} target="_blank" rel="noreferrer" aria-label={`Conhecer projeto ${project.title}`}>
                       Conhecer projeto <Icon name="arrow" className="size-4" />
                     </a>
                   </div>
@@ -415,6 +586,12 @@ function App() {
       </footer>
     </div>
   );
+}
+
+function App() {
+  return window.location.pathname.replace(/\/+$/, "") === "/portfolio"
+    ? <PortfolioPage />
+    : <LandingPage />;
 }
 
 export default App;

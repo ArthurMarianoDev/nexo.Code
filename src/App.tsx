@@ -193,13 +193,13 @@ function PortfolioPage() {
     <div className="min-h-screen bg-ink text-white selection:bg-electric selection:text-ink">
       <header className="site-header site-header--scrolled">
         <nav className="shell flex h-20 items-center justify-between" aria-label="Navegação do portfólio">
-          <a className="brand" href="/" aria-label="Nexo, página inicial">
+          <a className="brand" href="./" aria-label="Nexo, página inicial">
             nexo<span>.</span>
           </a>
-          <a className="portfolio-back" href="/">
+          <a className="portfolio-back" href="./">
             <span aria-hidden="true">←</span> Voltar para o início
           </a>
-          <a className="button button--small hidden sm:inline-flex" href="/#contato">
+          <a className="button button--small hidden sm:inline-flex" href="./#contato">
             Começar projeto
             <Icon name="arrow" className="size-4" />
           </a>
@@ -283,7 +283,7 @@ function PortfolioPage() {
       <footer className="portfolio-footer">
         <div className="shell footer-bottom">
           <span>© 2025 Nexo Studio. Todos os direitos reservados.</span>
-          <a href="/">nexo<span>.</span></a>
+          <a href="./">nexo<span>.</span></a>
         </div>
       </footer>
     </div>
@@ -454,7 +454,7 @@ function LandingPage() {
                 <p className="kicker">PROJETOS SELECIONADOS</p>
                 <h2>Trabalho bonito.<br />Resultado real.</h2>
               </div>
-              <a className="text-link" href="/portfolio" target="_blank" rel="noreferrer">
+              <a className="text-link" href="?page=portfolio" target="_blank" rel="noreferrer">
                 Ver todos os projetos <Icon name="arrow" className="size-4" />
               </a>
             </div>
@@ -589,7 +589,11 @@ function LandingPage() {
 }
 
 function App() {
-  return window.location.pathname.replace(/\/+$/, "") === "/portfolio"
+  const isPortfolioPage =
+    new URLSearchParams(window.location.search).get("page") === "portfolio" ||
+    window.location.pathname.replace(/\/+$/, "") === "/portfolio";
+
+  return isPortfolioPage
     ? <PortfolioPage />
     : <LandingPage />;
 }

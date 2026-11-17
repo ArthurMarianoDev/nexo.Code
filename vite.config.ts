@@ -9,11 +9,14 @@ import siteConfiguration from "./.figma/make/site.json"
 export default defineConfig(({ mode }) => {
   // .figma/make/deploy-preview passes `--mode development` for cached-preview builds.
   const emitSourcemaps = mode === "development"
+  const githubPagesBase = "/nexo.Code/"
 
   return {
     base: process.env.FIGMA_PUBLIC_URL
       ? `${process.env.FIGMA_PUBLIC_URL}/`
-      : "/",
+      : process.env.GITHUB_ACTIONS
+        ? githubPagesBase
+        : "/",
     build: {
       sourcemap: emitSourcemaps ? "inline" : false,
       minify: !emitSourcemaps,
@@ -75,6 +78,14 @@ type FigmaSiteConfiguration = {
 
 /** Applies /.figma/make/site.json to the generated document shell. */
 function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
+  let base = "/"
+
+  function withBase(assetPath: string): string {
+    if (!assetPath.startsWith("/") || assetPath.startsWith("//"))
+      return assetPath
+    return `${base}${assetPath.slice(1)}`
+  }
+
   function sanitizeHtmlValue(value: string | undefined): string {
     return value?.replace(/[^a-zA-Z0-9_-]/g, "") || ""
   }
@@ -110,6 +121,9 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
 
   return {
     name: "figma-site-configuration",
+    configResolved(resolvedConfig) {
+      base = resolvedConfig.base
+    },
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         if (!robotsTxt || req.url?.split("?")[0] !== "/robots.txt")
@@ -161,7 +175,7 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
         if (favicon) {
           tags.push({
             tag: "link",
-            attrs: { rel: "icon", href: favicon },
+            attrs: { rel: "icon", href: withBase(favicon) },
             injectTo: "head",
           })
         }
@@ -183,7 +197,7 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
           tags.push(
             {
               tag: "meta",
-              attrs: { property: "og:image", content: socialImage },
+              attrs: { property: "og:image", content: withBase(socialImage) },
               injectTo: "head",
             },
             {
@@ -193,7 +207,7 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
             },
             {
               tag: "meta",
-              attrs: { name: "twitter:image", content: socialImage },
+              attrs: { name: "twitter:image", content: withBase(socialImage) },
               injectTo: "head",
             },
           )

@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react"
 
+const homeHref = import.meta.env.BASE_URL
+const contactHref = `${homeHref}#contato`
+const storeHref = `${homeHref}#/loja`
+
 type IconName = "arrow" | "check" | "clock" | "code" | "design" | "growth" | "menu" | "shield" | "spark" | "x"
 
 function Icon({ name, className = "" }: { name: IconName className?: string }) {
@@ -215,15 +219,19 @@ function StorePage() {
           className="shell flex h-20 items-center justify-between"
           aria-label="Navegação da loja"
         >
-          <a className="brand" href="/" aria-label="Nexo, página inicial">
+          <a
+            className="brand"
+            href={homeHref}
+            aria-label="Nexo, página inicial"
+          >
             nexo<span>.</span>
           </a>
-          <a className="portfolio-back" href="/">
+          <a className="portfolio-back" href={homeHref}>
             <span aria-hidden="true">←</span> Voltar para o início
           </a>
           <a
             className="button button--small hidden sm:inline-flex"
-            href="/#contato"
+            href={contactHref}
           >
             Começar projeto
             <Icon name="arrow" className="size-4" />
@@ -393,7 +401,7 @@ function StorePage() {
       <footer className="portfolio-footer">
         <div className="shell footer-bottom">
           <span>© 2025 Nexo Studio. Todos os direitos reservados.</span>
-          <a href="/">
+          <a href={homeHref}>
             nexo<span>.</span>
           </a>
         </div>
@@ -440,7 +448,7 @@ function LandingPage() {
             <a className="nav-link" href="#servicos">
               Serviços
             </a>
-            <a className="nav-link nav-link--store" href="/loja">
+            <a className="nav-link nav-link--store" href={storeHref}>
               Loja
             </a>
             <a className="nav-link" href="#diferenciais">
@@ -480,7 +488,7 @@ function LandingPage() {
                 {item.charAt(0).toUpperCase() + item.slice(1)}
               </a>
             ))}
-            <a href="/loja" onClick={closeMenu}>
+            <a href={storeHref} onClick={closeMenu}>
               Loja — ver pacotes e valores
             </a>
             <a
@@ -521,7 +529,7 @@ function LandingPage() {
                   Solicitar diagnóstico
                   <Icon name="arrow" className="size-5" />
                 </a>
-                <a className="button button--ghost" href="/loja">
+                <a className="button button--ghost" href={storeHref}>
                   Ver pacotes e valores
                 </a>
               </div>
@@ -649,7 +657,7 @@ function LandingPage() {
                   Estratégico por inteiro.
                 </h2>
               </div>
-              <a className="text-link" href="/loja">
+              <a className="text-link" href={storeHref}>
                 Conhecer pacotes e valores{" "}
                 <Icon name="arrow" className="size-4" />
               </a>
@@ -754,7 +762,7 @@ function LandingPage() {
                 A Nexo une pensamento estratégico, direção de design e
                 desenvolvimento em um processo direto, próximo e criterioso.
               </p>
-              <a className="button button--ghost" href="/loja">
+              <a className="button button--ghost" href={storeHref}>
                 Ver formas de começar <Icon name="arrow" className="size-4" />
               </a>
             </div>
@@ -844,7 +852,7 @@ function LandingPage() {
           <div>
             <strong>NAVEGUE</strong>
             <a href="#servicos">Serviços</a>
-            <a href="/loja">Loja</a>
+            <a href={storeHref}>Loja</a>
             <a href="#processo">Processo</a>
             <a href="#sobre">Sobre</a>
           </div>
@@ -871,11 +879,13 @@ function LandingPage() {
 }
 
 function App() {
-  return window.location.pathname.replace(/\/+$/, "") === "/loja" ? (
-    <StorePage />
-  ) : (
-    <LandingPage />
-  )
+  const basePath = import.meta.env.BASE_URL.replace(/\/+$/, "")
+  const currentPath = window.location.pathname
+    .slice(basePath.length)
+    .replace(/\/+$/, "")
+  const isStore = window.location.hash === "#/loja" || currentPath === "/loja"
+
+  return isStore ? <StorePage /> : <LandingPage />
 }
 
 export default App

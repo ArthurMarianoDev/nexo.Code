@@ -891,12 +891,27 @@ function LandingPage() {
   )
 }
 
-function App() {
+function isStoreRoute() {
   const basePath = import.meta.env.BASE_URL.replace(/\/+$/, "")
   const currentPath = window.location.pathname
     .slice(basePath.length)
     .replace(/\/+$/, "")
-  const isStore = window.location.hash === "#/loja" || currentPath === "/loja"
+  return window.location.hash === "#/loja" || currentPath === "/loja"
+}
+
+function App() {
+  const [isStore, setIsStore] = useState(isStoreRoute)
+
+  useEffect(() => {
+    const syncRoute = () => setIsStore(isStoreRoute())
+    window.addEventListener("hashchange", syncRoute)
+    window.addEventListener("popstate", syncRoute)
+
+    return () => {
+      window.removeEventListener("hashchange", syncRoute)
+      window.removeEventListener("popstate", syncRoute)
+    }
+  }, [])
 
   return isStore ? <StorePage /> : <LandingPage />
 }

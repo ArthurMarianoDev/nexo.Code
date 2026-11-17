@@ -869,13 +869,17 @@ function LandingPage() {
             >
               +55 (94) 99116-4544
             </a>
-            <span>São Paulo, Brasil</span>
+            <span>Em todo território nacional.</span>
           </div>
           <div>
             <strong>SOCIAL</strong>
-            <a href="#inicio">Instagram</a>
-            <a href="#inicio">LinkedIn</a>
-            <a href="#inicio">Behance</a>
+            <a
+              href="https://www.instagram.com/nexocodebrasil/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Instagram
+            </a>
           </div>
         </div>
         <div className="shell footer-bottom">

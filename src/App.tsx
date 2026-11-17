@@ -3,6 +3,8 @@ import { useEffect, useState } from "react"
 const homeHref = import.meta.env.BASE_URL
 const contactHref = `${homeHref}#contato`
 const storeHref = `${homeHref}#/loja`
+const contactEmail = "nexocodebrasil@gmail.com"
+const whatsappUrl = "https://wa.me/5594991164544"
 
 type IconName = "arrow" | "check" | "clock" | "code" | "design" | "growth" | "menu" | "shield" | "spark" | "x"
 
@@ -321,7 +323,7 @@ function StorePage() {
                   </ul>
                   <a
                     className={`button ${item.featured ? "" : "button--ghost"}`}
-                    href={`mailto:ola@nexo.studio?subject=${encodeURIComponent(item.name)}`}
+                    href={`mailto:${contactEmail}?subject=${encodeURIComponent(item.name)}`}
                   >
                     {item.cta} <Icon name="arrow" className="size-4" />
                   </a>
@@ -389,7 +391,7 @@ function StorePage() {
             </h2>
             <a
               className="button"
-              href="mailto:ola@nexo.studio?subject=Projeto%20personalizado"
+              href={`mailto:${contactEmail}?subject=Projeto%20personalizado`}
             >
               Solicitar proposta personalizada{" "}
               <Icon name="arrow" className="size-5" />
@@ -826,7 +828,7 @@ function LandingPage() {
             </p>
             <a
               className="button button--light mt-8"
-              href="mailto:ola@nexo.studio"
+              href={`mailto:${contactEmail}`}
             >
               Solicitar diagnóstico inicial{" "}
               <Icon name="arrow" className="size-5" />
@@ -858,8 +860,15 @@ function LandingPage() {
           </div>
           <div>
             <strong>CONTATO</strong>
-            <a href="mailto:ola@nexo.studio">ola@nexo.studio</a>
-            <a href="tel:+5511999999999">+55 11 99999-9999</a>
+            <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Conversar com a Nexo Code pelo WhatsApp"
+            >
+              +55 (94) 99116-4544
+            </a>
             <span>São Paulo, Brasil</span>
           </div>
           <div>

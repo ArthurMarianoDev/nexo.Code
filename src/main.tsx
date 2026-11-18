@@ -7,6 +7,7 @@ import "./digital-matter.css"
 import "./kinetic.css"
 import "./immersive-v2.css"
 import "./motion-refinements.css"
+import "./beyond-interface.css"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

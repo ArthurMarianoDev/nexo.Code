@@ -22,6 +22,11 @@
 .matter-continuum[data-scene=contact]{opacity:.12}
 .matter-continuum[data-scene=contact] .matter-continuum__object{right:55%;top:28%;scale:1.6}
 .matter-continuum[data-scene=store]{opacity:.18}
+/* Route changes become part of the same 3D artwork, not a disconnected wipe. */
+.matter-continuum[data-transition=out]{opacity:.75!important}
+.matter-continuum[data-transition=out] .matter-continuum__object{right:30%!important;top:22%!important;scale:2.5!important;filter:blur(3px)}
+.matter-continuum[data-transition=in] .matter-continuum__object{filter:blur(0);transition:right .85s cubic-bezier(.16,1,.3,1),top .85s cubic-bezier(.16,1,.3,1),scale .85s cubic-bezier(.16,1,.3,1),filter .85s ease}
+
 .matter-continuum[data-scene=store] .matter-continuum__object{right:-10%;top:16%;scale:1.3}
 .site-page{position:relative;isolation:isolate}
 .site-page .shell,.site-page .site-header,.site-page .pricing-card{position:relative}

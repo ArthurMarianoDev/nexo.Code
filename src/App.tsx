@@ -1,8 +1,8 @@
-import { MatterContinuum, StudioNavigation, SoundToggle } from "./components/StudioSystems"
+import MatterEngine from "./components/MatterEngine"
+import { StudioNavigation, SoundToggle } from "./components/StudioSystems"
 import { KineticTypography, IntroSequence, NexoLab, PackageMorph, PageDepth } from "./components/ImmersiveExperiences"
 import CursorTrail from "./components/CursorTrail"
 import ScrollArtifact from "./components/ScrollArtifact"
-import SignalMatter from "./components/SignalMatter"
 import { useEffect, useRef, useState } from "react"
 
 const homeHref = import.meta.env.BASE_URL
@@ -481,8 +481,9 @@ function StorePage() {
       </header>
 
       <main>
-        <section className="store-hero">
+        <section className="store-hero store-hero--cinematic">
           <div className="orb orb--one" />
+          <div className="store-hero__art-index" aria-hidden="true">N/C — YOUR NEXT DIMENSION <span>006 — COMMERCE AS EXPERIENCE</span></div>
           <div className="shell relative z-10">
             <div className="eyebrow reveal">
               <span className="eyebrow-dot" />
@@ -803,7 +804,12 @@ function LandingPage() {
               </div>
             </div>
 
-            <SignalMatter />
+            <div className="matter-hero-portal" aria-hidden="true">
+              <span className="matter-hero-portal__orbit">N/C / 003</span>
+              <span className="matter-hero-portal__signature">MATTER IN MOTION — 01/06</span>
+              <span className="matter-hero-portal__corner matter-hero-portal__corner--a" />
+              <span className="matter-hero-portal__corner matter-hero-portal__corner--b" />
+            </div>
 
             <div className="stats-grid">
               <div>
@@ -837,6 +843,20 @@ function LandingPage() {
         </div>
 
         <NexoLab />
+
+        <section className="studio-manifesto" aria-labelledby="studio-manifesto-title">
+          <div className="shell studio-manifesto__inner">
+            <div className="studio-manifesto__index">
+              <span>CHAPTER 02 — DESIGN AS LANGUAGE</span>
+              <span>SCROLL TO REVEAL / N-C 003</span>
+            </div>
+            <h2 id="studio-manifesto-title">Não criamos<br/><em>mais do mesmo.</em><br/>Criamos o <span>próximo.</span></h2>
+            <div className="studio-manifesto__bottom">
+              <p>A tecnologia constrói a forma. A direção criativa dá significado. E cada interação faz a marca ganhar vida.</p>
+              <span>INOVAÇÃO SEM RUÍDO. IMPACTO COM INTENÇÃO.</span>
+            </div>
+          </div>
+        </section>
 
         <section id="servicos" className="section shell">
           <div className="section-heading" data-reveal>
@@ -1219,6 +1239,7 @@ function App() {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
       history.pushState({}, "", target.pathname + target.search + target.hash)
       setIsStore(toStore)
+      window.dispatchEvent(new Event("nexo:route-change"))
       window.scrollTo(0, 0)
       return
     }
@@ -1228,6 +1249,7 @@ function App() {
     timers.current.push(window.setTimeout(() => {
       history.pushState({}, "", target.pathname + target.search + target.hash)
       setIsStore(toStore)
+      window.dispatchEvent(new Event("nexo:route-change"))
       window.scrollTo(0, 0)
       transitionRef.current = "in"
       window.dispatchEvent(new CustomEvent("nexo:transition",{detail:"in"}))
@@ -1251,6 +1273,7 @@ function App() {
       transitionRef.current = "idle"
       setTransition("idle")
       setIsStore(isStoreRoute())
+      window.dispatchEvent(new Event("nexo:route-change"))
     }
     const intercept = (event: MouseEvent) => {
       if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
@@ -1278,7 +1301,7 @@ function App() {
 
   return (
     <>
-      <MatterContinuum />
+      <MatterEngine />
       <CursorTrail />
       <IntroSequence />
       <StudioNavigation />

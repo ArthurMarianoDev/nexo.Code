@@ -5,7 +5,7 @@ import { join } from "node:path"
 
 const src = path => readFileSync(join(process.cwd(), path), "utf8")
 const app = src("src/App.tsx")
-const shaders = src("src/components/SignalMatter.tsx")
+const shaders = src("src/components/MatterEngine.tsx")
 const experience = src("src/components/ImmersiveExperiences.tsx")
 const styles = src("src/immersive-v2.css")
 const entry = src("src/main.tsx")
@@ -21,7 +21,7 @@ test("commercial data and contact routes remain intact", () => {
 })
 
 test("all interactive experience components are wired", () => {
-  for (const value of ["<SignalMatter", "<ScrollArtifact", "<NexoLab", "<PackageMorph",
+  for (const value of ["<MatterEngine", "<ScrollArtifact", "<NexoLab", "<PackageMorph",
     "<CursorTrail", "<IntroSequence", "<KineticTypography", "<PageDepth", "nexo-page-transition"]) {
     assert.ok(app.includes(value), `Missing integration: ${value}`)
   }
@@ -31,13 +31,13 @@ test("all interactive experience components are wired", () => {
 
 test("WebGL artwork has reduced motion and fallback", () => {
   assert.match(shaders,/webgl2/)
-  assert.match(shaders,/signal-matter--fallback/)
+  assert.match(shaders,/matter-engine--fallback/)
   assert.match(shaders,/prefers-reduced-motion/)
   assert.match(shaders,/uScroll/)
 })
 
 test("visual system is imported, responsive and respects motion preferences", () => {
-  for(const stylesheet of ["digital-matter.css","kinetic.css","immersive-v2.css","motion-refinements.css"]) {
+  for(const stylesheet of ["digital-matter.css","kinetic.css","immersive-v2.css","motion-refinements.css","matter-engine-v3.css"]) {
     assert.ok(entry.includes(stylesheet), `Stylesheet not imported: ${stylesheet}`)
   }
   assert.match(styles,/@media\(max-width:/)
@@ -63,7 +63,7 @@ test("CTA response-time text is solid black on bright green", () => {
 
 test("original experience remains accessible from both pages", () => {
   for (const key of ["<NexoLab", "<PackageMorph", "<IntroSequence", "<KineticTypography",
-    "<CursorTrail", "<SignalMatter", "<ScrollArtifact", "nexo-page-transition"]) {
+    "<CursorTrail", "<MatterEngine", "<ScrollArtifact", "nexo-page-transition"]) {
     assert.ok(app.includes(key), `Experience component missing: ${key}`)
   }
 })
@@ -71,7 +71,7 @@ test("original experience remains accessible from both pages", () => {
 test("persistent studio systems render with safeguards", () => {
   const studio = src("src/components/StudioSystems.tsx")
   const css = src("src/beyond-interface.css")
-  for(const value of ["<MatterContinuum", "<StudioNavigation", "<SoundToggle"]) assert.ok(app.includes(value))
+  for(const value of ["<MatterEngine", "<StudioNavigation", "<SoundToggle"]) assert.ok(app.includes(value))
   for(const value of ["visibilitychange", "prefers-reduced-motion", "aria-expanded", "aria-pressed", "pointer-events:none", "mix-blend-mode:screen"]) {
     assert.ok((studio+css).includes(value), `Expected studio safeguard: ${value}`)
   }
@@ -107,4 +107,34 @@ test("CI audits runtime dependencies and Dependabot is configured", () => {
   const dep = src(".github/dependabot.yml")
   assert.match(dep,/package-ecosystem: npm/)
   assert.match(dep,/package-ecosystem: github-actions/)
+})
+
+test("all six visual pillars are connected in the rendered application",()=>{
+  const engine=src("src/components/MatterEngine.tsx")
+  const lab=src("src/components/LabSimulations.tsx")
+  const art=src("src/matter-engine-v3.css")
+  assert.match(app,/studio-manifesto-title/)
+  assert.match(app,/store-hero--cinematic/)
+  assert.match(app,/<MatterEngine/)
+  assert.doesNotMatch(app,/<SignalMatter/)
+  assert.match(experience,/nexo:package-change/)
+  assert.match(experience,/Constelação/)
+  assert.match(experience,/<LabSimulations/)
+  assert.match(engine,/gl\.getContext\("webgl2"/)
+  assert.match(engine,/uniform float uScroll/)
+  assert.match(engine,/uniform float uScene/)
+  assert.match(engine,/uniform float uPackage/)
+  assert.match(engine,/uniform float uTransition/)
+  assert.match(engine,/getNormal\(vec3 p\)/)
+  assert.match(engine,/float fresnel=/)
+  assert.match(engine,/transitionMix/)
+  assert.match(engine,/nexo:route-change/)
+  assert.match(engine,/webglcontextlost/)
+  assert.match(engine,/prefers-reduced-motion/)
+  assert.match(art,/studio-manifesto/)
+  assert.match(art,/store-hero--cinematic/)
+  assert.match(art,/matter-engine\[data-chapter="services"\]/)
+  assert.match(art,/matter-engine\[data-chapter="store"\]/)
+  assert.match(art,/\.pricing-card,.pricing-card:hover/)
+  for(const mode of ["field","optics","ribbon","type","constellation"])assert.ok(lab.includes('mode==="'+mode+'"'),"Missing interactive Lab mode: "+mode)
 })

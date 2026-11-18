@@ -8,7 +8,7 @@ const whatsappUrl = "https://wa.me/5594991164544"
 
 type IconName = "arrow" | "check" | "clock" | "code" | "design" | "growth" | "menu" | "shield" | "spark" | "x"
 
-function Icon({ name, className = "" }: { name: IconName className?: string }) {
+function Icon({ name, className = "" }: { name: IconName; className?: string }) {
   const paths: Record<IconName, React.ReactNode> = {
     arrow: (
       <>
@@ -110,7 +110,7 @@ const services = [
 const packages = [
   {
     name: "Landing Essencial",
-    label: "Para validar e vender",
+    label: "Campanhas e ofertas",
     price: "R$ 2.490",
     installment: "ou 3x de R$ 830",
     description:
@@ -128,7 +128,7 @@ const packages = [
   },
   {
     name: "Site Profissional",
-    label: "Mais escolhido",
+    label: "Para empresas em crescimento",
     price: "R$ 5.900",
     installment: "ou 4x de R$ 1.475",
     description:
@@ -147,7 +147,7 @@ const packages = [
   },
   {
     name: "Experiência Premium",
-    label: "Sob medida",
+    label: "Solução personalizada",
     price: "A partir de R$ 9.800",
     installment: "condições definidas na proposta",
     description:
@@ -436,7 +436,7 @@ function StorePage() {
   useScrollReveal()
 
   useEffect(() => {
-    document.title = "Loja — Nexo Studio"
+    document.title = "Soluções e valores — Nexo.Code"
     window.scrollTo(0, 0)
   }, [])
 
@@ -483,7 +483,7 @@ function StorePage() {
                 da sua <span>marca.</span>
               </h1>
               <p className="reveal reveal--delay-2">
-                Escopos objetivos, investimento transparente e execução sênior.
+                Escopos definidos, investimento transparente e desenvolvimento acompanhado de perto.
                 Escolha um ponto de partida; nós adaptamos a solução ao seu
                 negócio.
               </p>
@@ -649,7 +649,7 @@ function StorePage() {
 
       <footer className="portfolio-footer">
         <div className="shell footer-bottom">
-          <span>© 2025 Nexo Studio. Todos os direitos reservados.</span>
+          <span>© {new Date().getFullYear()} Nexo.Code. Todos os direitos reservados.</span>
           <a href={homeHref}>
             nexo<span>.</span>
           </a>
@@ -672,7 +672,7 @@ function LandingPage() {
   useScrollReveal()
 
   useEffect(() => {
-    document.title = "Nexo Studio — Sites estratégicos para negócios"
+    document.title = "Nexo.Code — Sites profissionais e soluções digitais"
     const onScroll = () => setScrolled(window.scrollY > 24)
     onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
@@ -801,7 +801,7 @@ function LandingPage() {
                   <span />
                   <span />
                 </div>
-                <div className="browser-url">nexo.studio/método</div>
+                <div className="browser-url">nexo.code / processo</div>
                 <span className="browser-action" />
               </div>
               <div className="browser-body">
@@ -1203,7 +1203,7 @@ function LandingPage() {
           </div>
         </div>
         <div className="shell footer-bottom">
-          <span>© 2025 Nexo Studio. Todos os direitos reservados.</span>
+          <span>© {new Date().getFullYear()} Nexo.Code. Todos os direitos reservados.</span>
           <span>Feito com estratégia, café e boas ideias.</span>
         </div>
       </footer>

@@ -120,7 +120,7 @@ test("all six visual pillars are connected in the rendered application",()=>{
   assert.match(experience,/nexo:package-change/)
   assert.match(experience,/Constelação/)
   assert.match(experience,/<LabSimulations/)
-  assert.match(engine,/gl\.getContext\("webgl2"/)
+  assert.match(engine,/canvas\.getContext\("webgl2"/)
   assert.match(engine,/uniform float uScroll/)
   assert.match(engine,/uniform float uScene/)
   assert.match(engine,/uniform float uPackage/)

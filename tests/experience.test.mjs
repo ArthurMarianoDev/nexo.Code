@@ -43,3 +43,27 @@ test("visual system is imported, responsive and respects motion preferences", ()
   assert.match(styles,/@media\(max-width:/)
   assert.match(styles,/@media\(prefers-reduced-motion:reduce\)/)
 })
+
+test("pricing cards do not disappear on pointer hover", () => {
+  assert.doesNotMatch(app, /onPointerEnter=\{\(\) => setPreviewPackage/)
+  const markup = app.slice(app.indexOf('className={`pricing-card'), app.indexOf('className={`pricing-card') + 500)
+  assert.doesNotMatch(markup, /data-reveal/)
+  const css = src("src/immersive-v2.css")
+  assert.match(css, /\.pricing-grid \.pricing-card:hover/)
+  assert.match(css, /opacity:1!important/)
+  assert.doesNotMatch(experience, /\.about-founder__photo,\.pricing-card/)
+})
+
+test("CTA response-time text is solid black on bright green", () => {
+  assert.match(app,/className="cta-response-note/)
+  const css = src("src/motion-refinements.css")
+  assert.match(css,/\.cta-section \.cta-response-note/)
+  assert.match(css,/color:#0a0d0f!important/)
+})
+
+test("original experience remains accessible from both pages", () => {
+  for (const key of ["<NexoLab", "<PackageMorph", "<IntroSequence", "<KineticTypography",
+    "<CursorTrail", "<SignalMatter", "<ScrollArtifact", "nexo-page-transition"]) {
+    assert.ok(app.includes(key), `Experience component missing: ${key}`)
+  }
+})

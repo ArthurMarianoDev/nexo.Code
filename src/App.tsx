@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const homeHref = import.meta.env.BASE_URL
 const contactHref = `${homeHref}#contato`
@@ -206,6 +206,81 @@ function useScrollReveal() {
   }, [])
 }
 
+function AmbientBackground() {
+  const backgroundRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const background = backgroundRef.current
+    if (!background) return
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches
+    let frame = 0
+    let pointerX = window.innerWidth * 0.72
+    let pointerY = window.innerHeight * 0.28
+
+    const update = () => {
+      const scrollY = window.scrollY
+      const scrollRange = Math.max(
+        document.documentElement.scrollHeight - window.innerHeight,
+        1,
+      )
+      const progress = Math.min(scrollY / scrollRange, 1)
+
+      background.style.setProperty("--ambient-slow", `${scrollY * -0.045}px`)
+      background.style.setProperty("--ambient-medium", `${scrollY * 0.08}px`)
+      background.style.setProperty("--ambient-fast", `${scrollY * -0.13}px`)
+      background.style.setProperty(
+        "--ambient-grid",
+        `${(scrollY * 0.12) % 72}px`,
+      )
+      background.style.setProperty("--ambient-progress", `${progress}`)
+      background.style.setProperty("--pointer-x", `${pointerX}px`)
+      background.style.setProperty("--pointer-y", `${pointerY}px`)
+      frame = 0
+    }
+
+    const scheduleUpdate = () => {
+      if (!frame) frame = window.requestAnimationFrame(update)
+    }
+    const handlePointerMove = (event: PointerEvent) => {
+      pointerX = event.clientX
+      pointerY = event.clientY
+      scheduleUpdate()
+    }
+
+    update()
+    if (!reducedMotion) {
+      window.addEventListener("scroll", scheduleUpdate, { passive: true })
+      window.addEventListener("resize", scheduleUpdate)
+      window.addEventListener("pointermove", handlePointerMove, {
+        passive: true,
+      })
+    }
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame)
+      window.removeEventListener("scroll", scheduleUpdate)
+      window.removeEventListener("resize", scheduleUpdate)
+      window.removeEventListener("pointermove", handlePointerMove)
+    }
+  }, [])
+
+  return (
+    <div className="ambient-background" ref={backgroundRef} aria-hidden="true">
+      <div className="ambient-background__mesh" />
+      <div className="ambient-background__grid" />
+      <div className="ambient-orb ambient-orb--green" />
+      <div className="ambient-orb ambient-orb--violet" />
+      <div className="ambient-orb ambient-orb--blue" />
+      <div className="ambient-beam ambient-beam--one" />
+      <div className="ambient-beam ambient-beam--two" />
+      <div className="ambient-scroll-progress" />
+    </div>
+  )
+}
+
 function PurchaseForm({
   packageName,
   onClose,
@@ -354,7 +429,8 @@ function StorePage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-ink text-white selection:bg-electric selection:text-ink">
+    <div className="site-page min-h-screen bg-ink text-white selection:bg-electric selection:text-ink">
+      <AmbientBackground />
       <header className="site-header site-header--scrolled">
         <nav
           className="shell flex h-20 items-center justify-between"
@@ -575,7 +651,8 @@ function LandingPage() {
   const closeMenu = () => setMenuOpen(false)
 
   return (
-    <div className="min-h-screen bg-ink text-white selection:bg-electric selection:text-ink">
+    <div className="site-page min-h-screen bg-ink text-white selection:bg-electric selection:text-ink">
+      <AmbientBackground />
       <header
         className={`site-header ${scrolled ? "site-header--scrolled" : ""}`}
       >

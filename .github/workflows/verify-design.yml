@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - design/editorial-nexocode-2026
+      - design/digital-matter-immersive
   pull_request:
     branches:
       - main

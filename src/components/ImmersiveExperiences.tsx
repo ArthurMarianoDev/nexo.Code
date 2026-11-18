@@ -121,7 +121,7 @@ export function PackageMorph({ selected, onSelect }: { selected: number; onSelec
 export function PageDepth() {
   useEffect(() => {
     if (reduceMotion()) return
-    const items = [...document.querySelectorAll<HTMLElement>(".service-card,.value-item,.process-step,.about-founder__photo,.pricing-card")]
+    const items = [...document.querySelectorAll<HTMLElement>(".service-card,.value-item,.process-step,.about-founder__photo")]
     let raf = 0
     const render = () => {
       raf = 0

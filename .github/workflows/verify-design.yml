@@ -9,6 +9,7 @@ on:
       - fix/store-hover-visibility-and-contrast
       - feat/beyond-interface-cinematic
       - security/harden-headers-privacy-audit-2026
+      - feat/nexo-matter-engine-v3
   pull_request:
     branches:
       - main

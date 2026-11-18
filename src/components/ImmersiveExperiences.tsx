@@ -1,3 +1,4 @@
+import LabSimulations, { type LabMode } from "./LabSimulations"
 import { useEffect, useRef, useState } from "react"
 
 const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -44,11 +45,13 @@ export function IntroSequence() {
   </div>
 }
 
-const experiments = [
-  { number: "01", label: "Campo magnético", summary: "Um campo de atração que acompanha o cursor.", type: "magnet" },
-  { number: "02", label: "Refração sintética", summary: "Luz, transparência e profundidade em camadas.", type: "refraction" },
-  { number: "03", label: "Forma generativa", summary: "Geometria que reage ao seu movimento.", type: "form" },
-] as const
+const experiments: {number:string;label:string;summary:string;type:LabMode}[] = [
+  { number: "01", label: "Campo magnético", summary: "Partículas sob atração controlada pelo cursor e clique.", type: "field" },
+  { number: "02", label: "Óptica sintética", summary: "Anéis de luz e lentes reativas à posição do ponteiro.", type: "optics" },
+  { number: "03", label: "Ondas generativas", summary: "Superfícies fluidas deformadas em tempo real.", type: "ribbon" },
+  { number: "04", label: "Tipografia viva", summary: "Uma identidade que se distorce e responde ao movimento.", type: "type" },
+  { number: "05", label: "Constelação", summary: "Rede dinâmica de pontos conectados por proximidade.", type: "constellation" },
+]
 
 /** Real local browser interaction, not a fake client portfolio or case study. */
 export function NexoLab() {
@@ -86,6 +89,7 @@ export function NexoLab() {
           onPointerMove={onMove} onPointerLeave={() => {stage.current?.style.setProperty("--lab-x-shift","0px");stage.current?.style.setProperty("--lab-y-shift","0px");stage.current?.style.setProperty("--lab-rotate","0deg");setPressed(false)}}
           onPointerDown={() => setPressed(true)} onPointerUp={() => setPressed(false)} onPointerCancel={() => setPressed(false)}
           aria-label={experiments[active].summary}>
+          <LabSimulations mode={experiments[active].type} />
           <div className="nexo-lab__orb nexo-lab__orb--a" aria-hidden="true" />
           <div className="nexo-lab__orb nexo-lab__orb--b" aria-hidden="true" />
           <div className="nexo-lab__orb nexo-lab__orb--c" aria-hidden="true" />
@@ -112,7 +116,7 @@ export function PackageMorph({ selected, onSelect }: { selected: number; onSelec
       {["Landing Essencial","Site Profissional","Experiência Premium"].map((label,index)=><button
         key={label} type="button" aria-pressed={selected===index}
         className={selected===index?"package-morph__tab package-morph__tab--active":"package-morph__tab"}
-        onClick={()=>{onSelect(index);document.querySelectorAll(".pricing-card")[index]?.scrollIntoView({behavior: reduceMotion()?"auto":"smooth",block:"nearest"})}}
+        onClick={()=>{onSelect(index);window.dispatchEvent(new CustomEvent("nexo:package-change",{detail:index}));document.querySelectorAll(".pricing-card")[index]?.scrollIntoView({behavior: reduceMotion()?"auto":"smooth",block:"nearest"})}}
       ><span>0{index+1}</span>{label}</button>)}
     </div>
   </div>

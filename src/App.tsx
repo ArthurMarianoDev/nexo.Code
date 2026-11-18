@@ -8,7 +8,7 @@ const whatsappUrl = "https://wa.me/5594991164544"
 
 type IconName = "arrow" | "check" | "clock" | "code" | "design" | "growth" | "menu" | "shield" | "spark" | "x"
 
-function Icon({ name, className = "" }: { name: IconName className?: string }) {
+function Icon({ name, className = "" }: { name: IconName; className?: string }) {
   const paths: Record<IconName, React.ReactNode> = {
     arrow: (
       <>

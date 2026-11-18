@@ -8,6 +8,7 @@ on:
       - feat/immersive-studio-v2
       - fix/store-hover-visibility-and-contrast
       - feat/beyond-interface-cinematic
+      - security/harden-headers-privacy-audit-2026
   pull_request:
     branches:
       - main
@@ -21,6 +22,8 @@ jobs:
           node-version: '22'
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+      - name: Security audit of production dependencies
+        run: npm audit --omit=dev --audit-level=high
       - name: TypeScript check
         run: npx tsc --noEmit
       - name: Experience regression tests

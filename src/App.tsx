@@ -1,3 +1,4 @@
+import { MatterContinuum, StudioNavigation, SoundToggle } from "./components/StudioSystems"
 import { KineticTypography, IntroSequence, NexoLab, PackageMorph, PageDepth } from "./components/ImmersiveExperiences"
 import CursorTrail from "./components/CursorTrail"
 import ScrollArtifact from "./components/ScrollArtifact"
@@ -1265,8 +1266,11 @@ function App() {
 
   return (
     <>
+      <MatterContinuum />
       <CursorTrail />
       <IntroSequence />
+      <StudioNavigation />
+      <SoundToggle />
       {isStore ? <StorePage /> : <LandingPage />}
       <KineticTypography key={isStore ? "store-typography" : "home-typography"} />
       <PageDepth key={isStore ? "store-depth" : "home-depth"} />

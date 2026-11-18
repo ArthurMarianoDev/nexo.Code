@@ -542,9 +542,7 @@ function StorePage() {
                     item.featured ? "pricing-card--featured" : ""
                   } ${packages.indexOf(item) === previewPackage ? "pricing-card--active" : ""}`}
                   key={item.name}
-                  data-reveal
                   onPointerMove={trackCardGlow}
-                  onPointerEnter={() => setPreviewPackage(packages.indexOf(item))}
                   onPointerLeave={resetCardGlow}
                 >
                   {item.featured && (
@@ -1122,7 +1120,7 @@ function LandingPage() {
               Solicitar diagnóstico inicial{" "}
               <Icon name="arrow" className="size-5" />
             </a>
-            <span className="mt-5 block text-sm text-white/60">
+            <span className="cta-response-note mt-5 block text-sm">
               Resposta em até 1 dia útil • Sem compromisso
             </span>
           </div>

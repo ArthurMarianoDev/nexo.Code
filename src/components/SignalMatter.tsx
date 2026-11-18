@@ -27,7 +27,8 @@ float smin(float a,float b,float k){float h=max(k-abs(a-b),0.)/k;return min(a,b)
 float scene(vec3 p) {
   p.xy *= rot(.22 + sin(uTime*.16)*.10 + uPointer.x*.22 + uScroll*.85);
   p.yz *= rot(uTime*.09 + uPointer.y*.16 + uScroll*.42);
-  p.x += .13*sin(p.z*3. + uScroll*6.28)*uScroll;\n  vec3 q=p;
+  p.x += .13*sin(p.z*3. + uScroll*6.28)*uScroll;
+  vec3 q=p;
   q.xy *= rot(.64);
   q.xz *= rot(.43);
   float wave=sin(5.3*q.x+uTime*.41)*sin(4.7*q.z-uTime*.27)*.13;
@@ -66,7 +67,8 @@ void main() {
     if(t>9.)break;
   }
   float vig=1.-smoothstep(.15,1.4,length(uv));
-  vec3 bg=mix(vec3(.025,.047,.047),vec3(.04,.075,.057),vUv.y);\n  bg += vec3(.018,.031,.014)*uScroll;
+  vec3 bg=mix(vec3(.025,.047,.047),vec3(.04,.075,.057),vUv.y);
+  bg += vec3(.018,.031,.014)*uScroll;
   bg+=vec3(.006,.02,.012)*vig;
   vec3 col=bg;
   if(hit>0.){

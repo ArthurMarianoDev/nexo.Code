@@ -1,7 +1,15 @@
 {
-  "description": "Create stunning, professional websites and landing pages tailored for any business type, enhancing online presence and engagement.",
+  "title": "Nexo Code — Sites profissionais para negócios",
+  "description": "Sites e landing pages estratégicas, responsivas e profissionais para empresas de todo o Brasil.",
+  "language": "pt-BR",
   "robots": {
-    "index": false
+    "index": true
+  },
+  "icons": {
+    "icon": "/favicon.svg"
+  },
+  "openGraph": {
+    "image": "/social/nexo-profile.png"
   },
   "accessibility": {
     "addBypassLinks": false,

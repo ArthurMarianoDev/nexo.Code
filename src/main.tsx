@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client"
 import App from "./App"
 import "./index.css"
 import "./editorial.css"
+import "./digital-matter.css"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

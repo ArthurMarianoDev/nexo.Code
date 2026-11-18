@@ -1022,24 +1022,72 @@ function LandingPage() {
         </section>
 
         <section id="sobre" className="section shell">
-          <div className="studio-statement" data-reveal>
-            <div>
-              <p className="kicker">SOBRE O STUDIO</p>
-              <span className="statement-index">N/S — 01</span>
+          <div className="about-institutional">
+            <div className="about-intro" data-reveal>
+              <div className="about-intro__header">
+                <p className="kicker">SOBRE A NEXO.CODE</p>
+                <span>N/C — INSTITUCIONAL</span>
+              </div>
+              <div className="about-intro__content">
+                <h2>
+                  Tecnologia, estratégia e compromisso{" "}
+                  <span>com o seu negócio.</span>
+                </h2>
+                <div>
+                  <p>
+                    A Nexo.Code nasceu com o propósito de desenvolver soluções
+                    digitais que ajudem empresas a construir uma presença online
+                    profissional, fortalecer suas marcas e criar novas
+                    oportunidades de negócio.
+                  </p>
+                  <p>
+                    Nossa atuação combina desenvolvimento web, planejamento e
+                    atenção à experiência do usuário, com foco em soluções
+                    alinhadas às necessidades de cada cliente.
+                  </p>
+                </div>
+              </div>
             </div>
-            <h2>
-              Não vendemos páginas decoradas. Construímos uma presença digital
-              <span> à altura do seu negócio.</span>
-            </h2>
-            <div className="statement-footer">
-              <p>
-                A Nexo une pensamento estratégico, direção de design e
-                desenvolvimento em um processo direto, próximo e criterioso.
-              </p>
-              <a className="button button--ghost" href={storeHref}>
-                Ver formas de começar <Icon name="arrow" className="size-4" />
-              </a>
-            </div>
+
+            <article className="about-founder" data-reveal>
+              <div className="about-founder__photo">
+                <img
+                  src={`${homeHref}founder/arthur-mariano.webp`}
+                  alt="Arthur Mariano, fundador e CEO da Nexo.Code."
+                  width="1448"
+                  height="1086"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div className="about-founder__content">
+                <p className="kicker">LIDERANÇA & VISÃO</p>
+                <div className="about-founder__identity">
+                  <h3>Arthur Mariano</h3>
+                  <span>Fundador & CEO da Nexo.Code</span>
+                </div>
+                <div className="about-founder__bio">
+                  <p>
+                    Arthur Mariano é o fundador e CEO da Nexo.Code, responsável
+                    pela direção estratégica da empresa, pelo desenvolvimento
+                    das soluções digitais e pelo relacionamento com os clientes.
+                  </p>
+                  <p>
+                    Sua proposta é construir uma empresa orientada à qualidade,
+                    à transparência e à criação de soluções tecnológicas que
+                    atendam às necessidades reais de cada negócio.
+                  </p>
+                </div>
+                <blockquote>
+                  <span>VISÃO INSTITUCIONAL</span>
+                  <p>
+                    “Construir soluções digitais com planejamento, transparência
+                    e atenção aos detalhes, priorizando as necessidades reais de
+                    cada empresa.”
+                  </p>
+                </blockquote>
+              </div>
+            </article>
           </div>
         </section>
 

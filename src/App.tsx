@@ -1,3 +1,4 @@
+import SignalMatter from "./components/SignalMatter"
 import { useEffect, useRef, useState } from "react"
 
 const homeHref = import.meta.env.BASE_URL
@@ -442,7 +443,6 @@ function StorePage() {
 
   return (
     <div className="site-page min-h-screen bg-ink text-white selection:bg-electric selection:text-ink">
-      <AmbientBackground />
       <header className="site-header site-header--scrolled">
         <nav
           className="shell flex h-20 items-center justify-between"
@@ -683,7 +683,6 @@ function LandingPage() {
 
   return (
     <div className="site-page min-h-screen bg-ink text-white selection:bg-electric selection:text-ink">
-      <AmbientBackground />
       <header
         className={`site-header ${scrolled ? "site-header--scrolled" : ""}`}
       >
@@ -768,21 +767,21 @@ function LandingPage() {
           <div className="shell relative z-10">
             <div className="eyebrow reveal">
               <span className="eyebrow-dot" />
-              DESIGN + TECNOLOGIA + ESTRATÉGIA
+              NEXO.CODE — DESENVOLVIMENTO DIGITAL
             </div>
             <h1 className="hero-title reveal reveal--delay-1">
-              Seu site precisa
+              O digital não
               <br />
-              trabalhar pelo <span>negócio.</span>
+              nasceu para ser <span>comum.</span>
             </h1>
             <div className="mt-8 flex flex-col gap-8 md:mt-10 md:flex-row md:items-end md:justify-between">
               <p className="max-w-xl text-lg leading-relaxed text-mist reveal reveal--delay-2 md:text-xl">
-                Estratégia, design e tecnologia para transformar sua presença
-                digital em um ativo de marca, vendas e confiança.
+                Desenvolvemos sites e experiências digitais com direção criativa,
+                tecnologia e um propósito claro: fazer sua marca se destacar.
               </p>
               <div className="flex flex-col gap-3 sm:flex-row reveal reveal--delay-3">
                 <a className="button" href="#contato">
-                  Solicitar diagnóstico
+                  Iniciar projeto
                   <Icon name="arrow" className="size-5" />
                 </a>
                 <a className="button button--ghost" href={storeHref}>
@@ -791,55 +790,7 @@ function LandingPage() {
               </div>
             </div>
 
-            <div
-              className="browser-stage reveal reveal--delay-3"
-              aria-label="Método de criação da Nexo Studio"
-            >
-              <div className="browser-top">
-                <div className="flex gap-2">
-                  <span />
-                  <span />
-                  <span />
-                </div>
-                <div className="browser-url">nexo.code / processo</div>
-                <span className="browser-action" />
-              </div>
-              <div className="browser-body">
-                <div className="mock-nav">
-                  <strong>nexo.</strong>
-                  <div>
-                    <span />
-                    <span />
-                    <span />
-                  </div>
-                  <b>Começar</b>
-                </div>
-                <div className="mock-content">
-                  <p>ESTRATÉGIA → DESIGN → CÓDIGO</p>
-                  <div className="mock-heading">
-                    Clareza para
-                    <br />
-                    crescer.
-                  </div>
-                  <div className="mock-cta">
-                    Conheça nosso método{" "}
-                    <Icon name="arrow" className="size-4" />
-                  </div>
-                </div>
-                <div className="mock-object">
-                  <div className="mock-object__glow" />
-                  <div className="mock-object__card">
-                    NEXO
-                    <br />
-                    <span>STUDIO DIGITAL</span>
-                  </div>
-                </div>
-                <div className="floating-tag">
-                  <Icon name="spark" className="size-4 text-electric" />
-                  Design que converte
-                </div>
-              </div>
-            </div>
+            <SignalMatter />
 
             <div className="stats-grid">
               <div>
@@ -867,8 +818,8 @@ function LandingPage() {
             <div>
               <p className="kicker">O QUE FAZEMOS</p>
               <h2>
-                Da primeira impressão
-                <br />à decisão de compra.
+                Da ideia à presença
+                <br />que deixa marca.
               </h2>
             </div>
             <p>
@@ -914,9 +865,9 @@ function LandingPage() {
               <div>
                 <p className="kicker">O PADRÃO NEXO</p>
                 <h2>
-                  Bonito por fora.
+                  Não é só estética.
                   <br />
-                  Estratégico por inteiro.
+                  É intenção em cada detalhe.
                 </h2>
               </div>
               <a className="text-link" href={storeHref}>
@@ -1138,9 +1089,9 @@ function LandingPage() {
               AGENDA ABERTA PARA NOVOS PROJETOS
             </p>
             <h2>
-              Seu próximo site
+              Sua próxima ideia
               <br />
-              começa com clareza.
+              merece ganhar forma.
             </h2>
             <p>
               Conte sobre o momento do negócio e receba uma recomendação de

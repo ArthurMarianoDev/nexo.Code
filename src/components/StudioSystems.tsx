@@ -42,11 +42,13 @@ export function MatterContinuum() {
     }
     const schedule=()=>{if(!raf)raf=requestAnimationFrame(render)}
     const visible=()=>{on=!document.hidden;if(on)schedule()}
+    const transition=(event:Event)=>{layer.dataset.transition=(event as CustomEvent<string>).detail}
     addEventListener("scroll",schedule,{passive:true})
     addEventListener("resize",schedule,{passive:true})
     document.addEventListener("visibilitychange",visible)
+    window.addEventListener("nexo:transition",transition)
     schedule()
-    return()=>{cancelAnimationFrame(raf);removeEventListener("scroll",schedule);removeEventListener("resize",schedule);document.removeEventListener("visibilitychange",visible)}
+    return()=>{cancelAnimationFrame(raf);removeEventListener("scroll",schedule);removeEventListener("resize",schedule);document.removeEventListener("visibilitychange",visible);window.removeEventListener("nexo:transition",transition)}
   },[])
   return <div ref={ref} className="matter-continuum" data-scene="hero" aria-hidden="true">
     <div className="matter-continuum__aura" />

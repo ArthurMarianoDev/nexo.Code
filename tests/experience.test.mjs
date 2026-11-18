@@ -78,3 +78,33 @@ test("persistent studio systems render with safeguards", () => {
   assert.match(css, /@media\(max-width:767px\)/)
   assert.match(src("src/main.tsx"), /beyond-interface.css/)
 })
+
+test("Cloudflare static assets publish security headers", () => {
+  const headers = src("public/_headers")
+  for (const name of ["Strict-Transport-Security", "X-Content-Type-Options", "Referrer-Policy",
+    "X-Frame-Options", "Permissions-Policy", "Content-Security-Policy-Report-Only"]) {
+    assert.ok(headers.includes(name + ":"), "Missing header: " + name)
+  }
+  assert.match(headers,/script-src 'self'/)
+  assert.match(headers,/object-src 'none'/)
+})
+
+test("form inputs bound lengths and privacy notice", () => {
+  assert.ok(app.includes('name="name"\n              maxLength={100}'))
+  assert.ok(app.includes('name="email"\n              maxLength={254}'))
+  assert.ok(app.includes('maxLength={22}'))
+  assert.ok(app.includes('maxLength={1200}'))
+  assert.match(app,/Política de Privacidade/)
+  assert.match(app,/privacidade.html/)
+  const privacy = src("public/privacidade.html")
+  assert.match(privacy,/LGPD/)
+  assert.match(privacy,/WhatsApp/)
+  assert.match(privacy,/nexocodebrasil@gmail.com/)
+})
+
+test("CI audits runtime dependencies and Dependabot is configured", () => {
+  assert.match(src(".github/workflows/verify-design.yml"),/npm audit --omit=dev --audit-level=high/)
+  const dep = src(".github/dependabot.yml")
+  assert.match(dep,/package-ecosystem: npm/)
+  assert.match(dep,/package-ecosystem: github-actions/)
+})

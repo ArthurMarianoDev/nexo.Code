@@ -65,8 +65,27 @@
 .package-morph__tab{border:1px solid rgba(201,208,212,.24);background:rgba(10,13,15,.58);border-radius:999px;color:#c9d0d4;font:500 .69rem "DM Mono",monospace;padding:11px 14px;cursor:pointer;transition:background .25s,color .25s,border-color .25s}
 .package-morph__tab span{margin-right:9px;opacity:.65}
 .package-morph__tab--active,.package-morph__tab:hover{background:#b9ff4f;border-color:#b9ff4f;color:#0a0d0f}
-.pricing-card{transform:translateY(var(--depth-shift,0px));transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .3s!important}
-.pricing-card:hover{transform:translateY(calc(var(--depth-shift,0px) - 7px))!important}
+/* The purchase cards must remain stable and readable: no scroll-driven transform,
+   no reveal opacity and no React state updates from hover. */
+.pricing-grid .pricing-card{
+  opacity:1!important;
+  visibility:visible!important;
+  filter:none!important;
+  transform:none!important;
+  will-change:auto;
+  transition:border-color .28s ease,background-color .28s ease,box-shadow .28s ease!important;
+}
+.pricing-grid .pricing-card:hover,
+.pricing-grid .pricing-card:focus-within{
+  opacity:1!important;
+  visibility:visible!important;
+  transform:none!important;
+  background-color:#1b2927!important;
+  border-color:#b9ff4f!important;
+  box-shadow:0 20px 50px rgba(0,0,0,.2),0 0 0 1px rgba(185,255,79,.23)!important;
+}
+.pricing-grid .pricing-card>*{opacity:1!important;visibility:visible!important}
+
 .pricing-card--active{border-color:#b9ff4f!important;box-shadow:0 0 0 1px rgba(185,255,79,.32)!important}
 .service-card,.value-item,.process-step{--depth-shift:0px}
 .service-card h3{transition:transform .45s,color .3s}

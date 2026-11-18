@@ -13,7 +13,7 @@ export function MatterContinuum() {
     if (!layer) return
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
     let raf = 0, on = true, scrollProgress = 0
-    const targets: { scene: SceneName; element: Element }[] = [
+    const targets = ([
       ["hero",document.getElementById("inicio")],
       ["lab",document.getElementById("laboratorio")],
       ["services",document.getElementById("servicos")],
@@ -21,7 +21,7 @@ export function MatterContinuum() {
       ["about",document.getElementById("sobre")],
       ["contact",document.getElementById("contato")],
       ["store",document.querySelector(".store-hero")],
-    ].filter((value): value is {scene: SceneName;element: Element} => Boolean(value[1])).map(([scene,element])=>({scene:scene as SceneName,element:element as Element}))
+    ] as Array<[SceneName, Element | null]>).filter((entry): entry is [SceneName, Element] => entry[1] !== null).map(([scene,element])=>({scene,element}))
     const render=()=>{
       raf=0
       if (!on || document.hidden) return

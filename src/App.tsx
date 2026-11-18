@@ -206,7 +206,146 @@ function useScrollReveal() {
   }, [])
 }
 
+function PurchaseForm({
+  packageName,
+  onClose,
+}: {
+  packageName: string
+  onClose: () => void
+}) {
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose()
+    }
+
+    document.body.style.overflow = "hidden"
+    window.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [onClose])
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    const name = String(formData.get("name") ?? "").trim()
+    const email = String(formData.get("email") ?? "").trim()
+    const phone = String(formData.get("phone") ?? "").trim()
+    const note = String(formData.get("message") ?? "").trim()
+    const message = [
+      "Olá, Nexo Code! Tenho interesse em contratar um projeto.",
+      "",
+      `Pacote: ${packageName}`,
+      `Nome: ${name}`,
+      `E-mail: ${email}`,
+      `Telefone: ${phone}`,
+      note ? `Mensagem: ${note}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n")
+
+    window.open(
+      `${whatsappUrl}?text=${encodeURIComponent(message)}`,
+      "_blank",
+      "noopener,noreferrer",
+    )
+  }
+
+  return (
+    <div
+      className="purchase-overlay"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose()
+      }}
+    >
+      <section
+        className="purchase-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="purchase-title"
+      >
+        <div className="purchase-modal__header">
+          <div>
+            <p className="kicker">INICIAR PROJETO</p>
+            <span>{packageName}</span>
+          </div>
+          <button
+            className="purchase-close"
+            type="button"
+            onClick={onClose}
+            aria-label="Fechar formulário"
+          >
+            <Icon name="x" className="size-5" />
+          </button>
+        </div>
+
+        <h2 id="purchase-title">Conte um pouco sobre você.</h2>
+        <p className="purchase-intro">
+          Preencha seus dados para continuar a conversa com a Nexo Code pelo
+          WhatsApp.
+        </p>
+
+        <form className="purchase-form" onSubmit={handleSubmit}>
+          <label>
+            <span>Nome completo</span>
+            <input
+              type="text"
+              name="name"
+              autoComplete="name"
+              placeholder="Como podemos chamar você?"
+              required
+              autoFocus
+            />
+          </label>
+          <label>
+            <span>E-mail</span>
+            <input
+              type="email"
+              name="email"
+              autoComplete="email"
+              placeholder="voce@empresa.com"
+              required
+            />
+          </label>
+          <label className="purchase-form__wide">
+            <span>Número de telefone</span>
+            <input
+              type="tel"
+              name="phone"
+              autoComplete="tel"
+              inputMode="tel"
+              placeholder="(00) 00000-0000"
+              required
+            />
+          </label>
+          <label className="purchase-form__wide">
+            <span>
+              Mensagem <i>opcional</i>
+            </span>
+            <textarea
+              name="message"
+              rows={4}
+              placeholder="Conte sobre seu negócio, objetivo ou prazo desejado."
+            />
+          </label>
+          <div className="purchase-form__footer">
+            <p>Seus dados serão usados somente para este atendimento.</p>
+            <button className="button" type="submit">
+              Continuar no WhatsApp <Icon name="arrow" className="size-4" />
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  )
+}
+
 function StorePage() {
+  const [selectedPackage, setSelectedPackage] = useState<string | null>(null)
   useScrollReveal()
 
   useEffect(() => {
@@ -321,12 +460,13 @@ function StorePage() {
                       </li>
                     ))}
                   </ul>
-                  <a
+                  <button
                     className={`button ${item.featured ? "" : "button--ghost"}`}
-                    href={`mailto:${contactEmail}?subject=${encodeURIComponent(item.name)}`}
+                    type="button"
+                    onClick={() => setSelectedPackage(item.name)}
                   >
                     {item.cta} <Icon name="arrow" className="size-4" />
-                  </a>
+                  </button>
                 </article>
               ))}
             </div>
@@ -408,6 +548,12 @@ function StorePage() {
           </a>
         </div>
       </footer>
+      {selectedPackage && (
+        <PurchaseForm
+          packageName={selectedPackage}
+          onClose={() => setSelectedPackage(null)}
+        />
+      )}
     </div>
   )
 }

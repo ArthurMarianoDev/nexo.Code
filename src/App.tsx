@@ -1,3 +1,4 @@
+import { MatterContinuum, StudioNavigation, SoundToggle } from "./components/StudioSystems"
 import { KineticTypography, IntroSequence, NexoLab, PackageMorph, PageDepth } from "./components/ImmersiveExperiences"
 import CursorTrail from "./components/CursorTrail"
 import ScrollArtifact from "./components/ScrollArtifact"
@@ -1213,12 +1214,14 @@ function App() {
       return
     }
     transitionRef.current = "out"
+    window.dispatchEvent(new CustomEvent("nexo:transition",{detail:"out"}))
     setTransition("out")
     timers.current.push(window.setTimeout(() => {
       history.pushState({}, "", target.pathname + target.search + target.hash)
       setIsStore(toStore)
       window.scrollTo(0, 0)
       transitionRef.current = "in"
+      window.dispatchEvent(new CustomEvent("nexo:transition",{detail:"in"}))
       setTransition("in")
       if (!toStore && target.hash && !target.hash.startsWith("#/")) {
         timers.current.push(window.setTimeout(() => {
@@ -1227,6 +1230,7 @@ function App() {
       }
       timers.current.push(window.setTimeout(() => {
         transitionRef.current = "idle"
+        window.dispatchEvent(new CustomEvent("nexo:transition",{detail:"idle"}))
         setTransition("idle")
       }, 860))
     }, 610))
@@ -1265,8 +1269,11 @@ function App() {
 
   return (
     <>
+      <MatterContinuum />
       <CursorTrail />
       <IntroSequence />
+      <StudioNavigation />
+      <SoundToggle />
       {isStore ? <StorePage /> : <LandingPage />}
       <KineticTypography key={isStore ? "store-typography" : "home-typography"} />
       <PageDepth key={isStore ? "store-depth" : "home-depth"} />

@@ -1,0 +1,71 @@
+/* BEYOND THE INTERFACE: one persistent visual organism with per-section choreography. */
+.matter-continuum{--matter-progress:0;--matter-turn:0deg;--matter-rise:0px;position:fixed;inset:0;z-index:5;pointer-events:none;overflow:hidden;mix-blend-mode:screen;opacity:.6;transition:opacity 1s ease}
+.matter-continuum__aura{position:absolute;top:38%;right:-8%;width:min(45vw,640px);aspect-ratio:1;background:radial-gradient(ellipse,rgba(59,182,138,.13),rgba(134,217,255,.04) 40%,transparent 67%);border-radius:50%;filter:blur(48px);transition:transform 1.2s ease,opacity 1.2s ease}
+.matter-continuum__object{position:absolute;top:34%;right:-5%;width:min(36vw,510px);aspect-ratio:1;perspective:840px;transform-style:preserve-3d;transform:translateY(var(--matter-rise)) rotate(var(--matter-turn)) scale(.87);transition:right .95s cubic-bezier(.16,1,.3,1),top .95s cubic-bezier(.16,1,.3,1),scale .95s cubic-bezier(.16,1,.3,1);will-change:transform}
+.matter-continuum__ring{position:absolute;inset:18%;border:11px solid rgba(185,255,79,.86);border-bottom-color:rgba(24,95,90,.78);border-left-color:rgba(134,217,255,.8);border-radius:39% 61% 63% 37%/62% 34% 66% 38%;filter:drop-shadow(0 0 24px rgba(134,217,255,.16));transform-style:preserve-3d;transition:transform 1.3s cubic-bezier(.16,1,.3,1),border-radius 1.3s}
+.matter-continuum__ring--one{transform:rotateX(65deg) rotateY(35deg) rotateZ(20deg)}
+.matter-continuum__ring--two{inset:25%;border-width:10px;border-color:rgba(134,217,255,.8);border-right-color:#b9ff4f;transform:rotateX(-40deg) rotateY(67deg) rotateZ(-28deg)}
+.matter-continuum__ring--three{inset:34%;border-width:8px;border-color:rgba(185,255,79,.74);transform:rotateX(75deg) rotateY(-55deg) rotateZ(60deg)}
+.matter-continuum__core{position:absolute;inset:43%;border-radius:50%;background:radial-gradient(circle at 28% 23%,rgba(238,255,219,.85),rgba(113,213,168,.4) 45%,rgba(13,89,80,.1) 80%);box-shadow:0 0 48px rgba(185,255,79,.3)}
+.matter-continuum[data-scene=hero]{opacity:.18}
+.matter-continuum[data-scene=hero] .matter-continuum__object{right:-21%;top:18%;scale:1.3}
+.matter-continuum[data-scene=lab]{opacity:.24}
+.matter-continuum[data-scene=lab] .matter-continuum__object{right:68%;top:12%;scale:.9}
+.matter-continuum[data-scene=lab] .matter-continuum__ring--one{transform:rotateY(110deg) rotateX(42deg) rotateZ(70deg)}
+.matter-continuum[data-scene=services]{opacity:.45}
+.matter-continuum[data-scene=services] .matter-continuum__object{right:-13%;top:22%;scale:1.06}
+.matter-continuum[data-scene=services] .matter-continuum__ring--two{transform:rotateX(-100deg) rotateY(130deg) rotateZ(64deg)}
+.matter-continuum[data-scene=manifesto]{opacity:.1}
+.matter-continuum[data-scene=manifesto] .matter-continuum__object{right:55%;top:48%;scale:.55}
+.matter-continuum[data-scene=about]{opacity:.32}
+.matter-continuum[data-scene=about] .matter-continuum__object{right:-6%;top:31%;scale:.75}
+.matter-continuum[data-scene=contact]{opacity:.12}
+.matter-continuum[data-scene=contact] .matter-continuum__object{right:55%;top:28%;scale:1.6}
+.matter-continuum[data-scene=store]{opacity:.18}
+/* Route changes become part of the same 3D artwork, not a disconnected wipe. */
+.matter-continuum[data-transition=out]{opacity:.75!important}
+.matter-continuum[data-transition=out] .matter-continuum__object{right:30%!important;top:22%!important;scale:2.5!important;filter:blur(3px)}
+.matter-continuum[data-transition=in] .matter-continuum__object{filter:blur(0);transition:right .85s cubic-bezier(.16,1,.3,1),top .85s cubic-bezier(.16,1,.3,1),scale .85s cubic-bezier(.16,1,.3,1),filter .85s ease}
+
+.matter-continuum[data-scene=store] .matter-continuum__object{right:-10%;top:16%;scale:1.3}
+.site-page{position:relative;isolation:isolate}
+.site-page .shell,.site-page .site-header,.site-page .pricing-card{position:relative}
+.site-page .site-header{z-index:100}
+.site-page main{position:relative;z-index:6}
+.site-page .hero-grid,.site-page .nexo-lab,.site-page .store-hero,.site-page .store-section{isolation:isolate}
+/* Floating controls are persistent and usable while a route transition runs. */
+.studio-menu-button,.studio-audio-toggle{position:fixed;z-index:10100;border:1px solid rgba(185,255,79,.5);color:#e8f7eb;background:rgba(9,19,19,.84);backdrop-filter:blur(20px);border-radius:100px;font:500 .62rem "DM Mono",monospace;letter-spacing:.08em;cursor:pointer;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.2);transition:background .25s,color .25s,transform .25s}
+.studio-menu-button{bottom:28px;left:28px;padding:12px 19px}
+.studio-audio-toggle{bottom:28px;right:28px;padding:14px 18px}
+.studio-menu-button:hover,.studio-audio-toggle:hover{color:#0a0d0f;background:#b9ff4f;transform:translateY(-3px)}
+.studio-menu-button__glyph{font:500 1.2rem/1 "Space Grotesk",sans-serif;color:#b9ff4f}
+.studio-menu-button:hover .studio-menu-button__glyph{color:#0a0d0f}
+.studio-menu{position:fixed;inset:0;z-index:10098;visibility:hidden;opacity:0;pointer-events:none;background:#0a1012;overflow-y:auto;clip-path:circle(0% at 8% 95%);transition:clip-path .9s cubic-bezier(.76,0,.2,1),opacity .4s,visibility .4s}
+.studio-menu--open{visibility:visible;opacity:1;pointer-events:auto;clip-path:circle(150% at 8% 95%)}
+.studio-menu__inner{position:relative;z-index:1;max-width:1100px;margin:auto;padding:110px clamp(28px,6vw,90px) 95px}
+.studio-menu__eyebrow,.studio-menu__bottom{color:#86d9ff;font:500 .65rem "DM Mono",monospace;letter-spacing:.15em}
+.studio-menu__bottom{margin-top:42px;color:#a9bbb7}
+.studio-menu nav{margin-top:38px}
+.studio-menu nav a{display:grid;grid-template-columns:50px 1fr 35px;gap:15px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(200,230,218,.18);text-decoration:none;color:#eef9ec;transition:color .3s,padding .3s}
+.studio-menu nav a:hover{color:#b9ff4f;padding-left:15px}
+.studio-menu nav a small{font:500 .62rem "DM Mono",monospace;color:#86d9ff}
+.studio-menu nav a strong{font:500 clamp(2.6rem,6.3vw,6rem)/1.1 "Space Grotesk",sans-serif;letter-spacing:-.085em}
+.studio-menu nav a span{font-size:1.6rem;font-weight:300}
+.studio-menu__ambient{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.studio-menu__ambient span{position:absolute;top:30%;right:0;width:40vw;aspect-ratio:1;border:30px solid rgba(185,255,79,.09);border-radius:44% 56% 62% 38%;transform:rotate(40deg)}
+.studio-menu__ambient span:nth-child(2){top:20%;right:-5%;width:30vw;transform:rotate(-40deg);border-color:rgba(134,217,255,.09)}
+.studio-menu__ambient span:nth-child(3){top:42%;right:10%;width:18vw;transform:rotate(130deg);border-color:rgba(185,255,79,.13)}
+/* Visual performance guardrails */
+@media(max-width:767px){
+ .matter-continuum{opacity:.1!important}
+ .matter-continuum__object{width:75vw;right:-36%!important;top:28%!important}
+ .studio-menu-button{bottom:14px;left:14px;padding:11px 15px}
+ .studio-audio-toggle{bottom:14px;right:14px;padding:12px 13px}
+ .studio-menu__inner{padding-top:85px}
+ .studio-menu nav a strong{font-size:clamp(2.3rem,9vw,4rem)}
+ .studio-menu nav a{grid-template-columns:35px 1fr 25px}
+}
+@media(prefers-reduced-motion:reduce){
+ .matter-continuum{display:none!important}
+ .studio-menu,.studio-menu__ambient span,.studio-menu nav a,.studio-menu-button,.studio-audio-toggle{transition:none!important}
+}

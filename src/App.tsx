@@ -1,3 +1,4 @@
+import { KineticTypography, IntroSequence, NexoLab, PackageMorph, PageDepth } from "./components/ImmersiveExperiences"
 import CursorTrail from "./components/CursorTrail"
 import ScrollArtifact from "./components/ScrollArtifact"
 import SignalMatter from "./components/SignalMatter"
@@ -436,6 +437,7 @@ function PurchaseForm({
 
 function StorePage() {
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null)
+  const [previewPackage, setPreviewPackage] = useState(1)
   useScrollReveal()
 
   useEffect(() => {
@@ -532,15 +534,17 @@ function StorePage() {
               </div>
               <p>Condição especial sujeita à disponibilidade de agenda.</p>
             </div>
+            <PackageMorph selected={previewPackage} onSelect={setPreviewPackage} />
             <div className="pricing-grid">
               {packages.map((item) => (
                 <article
                   className={`pricing-card interactive-card ${
                     item.featured ? "pricing-card--featured" : ""
-                  }`}
+                  } ${packages.indexOf(item) === previewPackage ? "pricing-card--active" : ""}`}
                   key={item.name}
                   data-reveal
                   onPointerMove={trackCardGlow}
+                  onPointerEnter={() => setPreviewPackage(packages.indexOf(item))}
                   onPointerLeave={resetCardGlow}
                 >
                   {item.featured && (
@@ -824,6 +828,8 @@ function LandingPage() {
           </div>
           <ScrollArtifact />
         </div>
+
+        <NexoLab />
 
         <section id="servicos" className="section shell">
           <div className="section-heading" data-reveal>
@@ -1262,7 +1268,10 @@ function App() {
   return (
     <>
       <CursorTrail />
+      <IntroSequence />
       {isStore ? <StorePage /> : <LandingPage />}
+      <KineticTypography key={isStore ? "store-typography" : "home-typography"} />
+      <PageDepth key={isStore ? "store-depth" : "home-depth"} />
       <div className={`nexo-page-transition nexo-page-transition--${transition}`}
         role="presentation" aria-hidden="true">
         <div className="nexo-page-transition__surface" />

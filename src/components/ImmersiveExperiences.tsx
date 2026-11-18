@@ -54,15 +54,14 @@ const experiments = [
 export function NexoLab() {
   const stage = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
-  const [motion, setMotion] = useState({ x: 0, y: 0 })
   const [pressed, setPressed] = useState(false)
   const onMove = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "touch" || reduceMotion()) return
     const rect = event.currentTarget.getBoundingClientRect()
-    setMotion({
-      x: Math.max(-1, Math.min(1, (event.clientX - rect.left - rect.width / 2) / (rect.width / 2))),
-      y: Math.max(-1, Math.min(1, (event.clientY - rect.top - rect.height / 2) / (rect.height / 2))),
-    })
+    const x = Math.max(-1, Math.min(1, (event.clientX - rect.left - rect.width / 2) / (rect.width / 2)))
+    const y = Math.max(-1, Math.min(1, (event.clientY - rect.top - rect.height / 2) / (rect.height / 2)))
+    event.currentTarget.style.setProperty("--lab-x", String(x))
+    event.currentTarget.style.setProperty("--lab-y", String(y))
   }
   return <section id="laboratorio" className="nexo-lab" aria-labelledby="lab-title">
     <div className="shell nexo-lab__shell">
@@ -77,15 +76,14 @@ export function NexoLab() {
             type="button" key={item.number}
             className={`nexo-lab__option ${active === index ? "nexo-lab__option--active" : ""}`}
             aria-pressed={active === index}
-            onClick={() => {setActive(index);setMotion({x:0,y:0});setPressed(false)}}>
+            onClick={() => {setActive(index);stage.current?.style.setProperty("--lab-x","0");stage.current?.style.setProperty("--lab-y","0");setPressed(false)}}>
             <span>{item.number}</span><strong>{item.label}</strong><span aria-hidden="true">↗</span>
           </button>)}
           <p className="nexo-lab__note">DEMONSTRAÇÕES AUTORAIS · NÃO SÃO PROJETOS DE CLIENTES</p>
         </div>
         <div ref={stage} className={`nexo-lab__stage nexo-lab__stage--${experiments[active].type} ${pressed ? "nexo-lab__stage--pressed" : ""}`}
-          onPointerMove={onMove} onPointerLeave={() => setMotion({x:0,y:0})}
+          onPointerMove={onMove} onPointerLeave={() => {stage.current?.style.setProperty("--lab-x","0");stage.current?.style.setProperty("--lab-y","0")}}
           onPointerDown={() => setPressed(true)} onPointerUp={() => setPressed(false)}
-          style={{"--lab-x": `${motion.x}`, "--lab-y": `${motion.y}`} as React.CSSProperties}
           aria-label={experiments[active].summary}>
           <div className="nexo-lab__orb nexo-lab__orb--a" aria-hidden="true" />
           <div className="nexo-lab__orb nexo-lab__orb--b" aria-hidden="true" />

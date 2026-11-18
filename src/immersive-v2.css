@@ -1,0 +1,77 @@
+/* IMMERSIVE STUDIO / 2026 — kinetic typography, cinematic intro, experiential lab and morphing shop */
+.kinetic-type{opacity:0;filter:blur(12px);transform:translate3d(0,34px,0) skewY(1deg);transition:opacity .9s cubic-bezier(.16,1,.3,1),filter .9s cubic-bezier(.16,1,.3,1),transform 1.05s cubic-bezier(.16,1,.3,1)}
+.kinetic-type--visible{opacity:1;filter:blur(0);transform:translate3d(0,0,0) skewY(0)}
+.hero-title.kinetic-type{transition-delay:.16s}
+.section-heading h2.kinetic-type{transition-delay:.08s}
+@media(prefers-reduced-motion:reduce){.kinetic-type{opacity:1;filter:none;transform:none;transition:none}}
+/* Never cover links with an idle intro. This is a nonblocking welcome layer. */
+.nexo-intro{position:fixed;inset:0;z-index:10001;pointer-events:none;visibility:hidden;opacity:0;display:grid;place-items:center}
+.nexo-intro--visible{visibility:visible;opacity:1}
+.nexo-intro__plane{position:absolute;inset:0;background:#0a0d0f;transform-origin:top;transform:scaleY(0)}
+.nexo-intro--visible .nexo-intro__plane{animation:nexo-intro-plane 1.45s cubic-bezier(.65,0,.3,1) both}
+.nexo-intro__mark{position:relative;z-index:1;color:#f0f3f1;font:700 clamp(4rem,13vw,10rem)/1 "Space Grotesk",sans-serif;letter-spacing:-.13em;opacity:0}
+.nexo-intro__mark span{color:#b9ff4f}
+.nexo-intro--visible .nexo-intro__mark{animation:nexo-intro-logo 1.4s both}
+.nexo-intro__index{position:absolute;bottom:12%;color:#b9ff4f;font:500 .62rem "DM Mono",monospace;letter-spacing:.19em;opacity:0}
+.nexo-intro--visible .nexo-intro__index{animation:nexo-intro-logo 1.4s .12s both}
+@keyframes nexo-intro-plane{0%{transform:scaleY(1)}58%{transform:scaleY(1)}100%{transform:scaleY(0)}}
+@keyframes nexo-intro-logo{0%{opacity:0;filter:blur(20px);transform:translateY(30px) scale(.9)}33%{opacity:1;filter:blur(0);transform:translateY(0) scale(1)}60%{opacity:1}85%,100%{opacity:0;filter:blur(10px);transform:translateY(-45px) scale(1.06)}}
+/* The lab is a real tactile demonstration, not invented portfolio work. */
+.nexo-lab{position:relative;padding:140px 0 160px;background:radial-gradient(ellipse at 73% 60%,rgba(41,108,97,.17),transparent 50%),#0d1417;overflow:hidden;border-top:1px solid rgba(134,217,255,.18);border-bottom:1px solid rgba(134,217,255,.18)}
+.nexo-lab:before{content:"N/C";position:absolute;left:-2%;bottom:-13%;color:rgba(183,220,216,.025);font:700 clamp(16rem,35vw,40rem) "Space Grotesk",sans-serif;letter-spacing:-.15em;pointer-events:none}
+.nexo-lab__heading{display:grid;grid-template-columns:1fr minmax(260px,360px);gap:20px 40px;align-items:end}
+.nexo-lab__heading .kicker{grid-column:1/-1}
+.nexo-lab__heading h2{font:500 clamp(3.6rem,7vw,8rem)/.97 "Space Grotesk",sans-serif;letter-spacing:-.09em}
+.nexo-lab__heading h2 em{font-style:normal;color:#b9ff4f}
+.nexo-lab__heading>p:last-child{color:#aabdb9;line-height:1.7;max-width:350px}
+.nexo-lab__layout{display:grid;grid-template-columns:minmax(265px,36%) 1fr;margin-top:72px;min-height:545px;border-top:1px solid rgba(201,208,212,.19);border-bottom:1px solid rgba(201,208,212,.19)}
+.nexo-lab__options{display:flex;flex-direction:column;justify-content:center;padding:50px 33px 50px 0;border-right:1px solid rgba(201,208,212,.19)}
+.nexo-lab__option{display:grid;grid-template-columns:30px 1fr 24px;align-items:center;gap:15px;width:100%;padding:27px 10px;text-align:left;color:#879c9b;border:0;border-bottom:1px solid rgba(201,208,212,.16);background:transparent;cursor:pointer;transition:color .35s,padding-left .35s}
+.nexo-lab__option>span{font:500 .68rem "DM Mono",monospace}
+.nexo-lab__option strong{font:500 clamp(1.35rem,2vw,2rem) "Space Grotesk",sans-serif;letter-spacing:-.06em}
+.nexo-lab__option--active,.nexo-lab__option:hover{color:#b9ff4f;padding-left:20px}
+.nexo-lab__note{margin-top:44px;font:500 .57rem/1.8 "DM Mono",monospace;letter-spacing:.11em;color:#809592}
+.nexo-lab__stage{--lab-x:0;--lab-y:0;position:relative;overflow:hidden;min-height:520px;isolation:isolate;perspective:900px;background:radial-gradient(circle at 55% 46%,rgba(52,143,124,.22),transparent 56%),#0b1315;cursor:crosshair}
+.nexo-lab__stage:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 59px,rgba(185,255,79,.045) 60px),repeating-linear-gradient(0deg,transparent 0,transparent 59px,rgba(185,255,79,.035) 60px);pointer-events:none}
+.nexo-lab__orb{position:absolute;top:50%;left:50%;width:min(44%,265px);aspect-ratio:1;transform-style:preserve-3d;border-radius:42% 58% 64% 36%/54% 39% 61% 46%;transition:transform .38s cubic-bezier(.2,.8,.1,1),border-radius .65s,filter .5s,background .5s;box-shadow:inset 15px 15px 30px rgba(255,255,255,.25),inset -28px -26px 38px rgba(1,20,24,.56),0 0 75px rgba(92,194,151,.15)}
+.nexo-lab__orb--a{background:linear-gradient(135deg,rgba(218,255,182,.95),rgba(109,223,180,.78) 38%,rgba(15,74,76,.88) 75%);transform:translate(calc(-60% + var(--lab-x)*44px),calc(-60% + var(--lab-y)*39px)) rotate(calc(var(--lab-x)*45deg)) rotateY(calc(var(--lab-x)*30deg));}
+.nexo-lab__orb--b{width:min(37%,230px);background:linear-gradient(135deg,rgba(134,217,255,.73),rgba(53,165,156,.66),rgba(8,39,47,.8));transform:translate(calc(-6% - var(--lab-x)*63px),calc(-25% - var(--lab-y)*39px)) rotate(calc(var(--lab-x)*-50deg));mix-blend-mode:screen}
+.nexo-lab__orb--c{width:min(27%,150px);background:radial-gradient(circle at 24% 24%,#f3ffd6,#a4ff70 34%,#276e5c 80%);transform:translate(calc(-110% + var(--lab-x)*82px),calc(5% + var(--lab-y)*54px)) rotate(calc(var(--lab-y)*32deg));mix-blend-mode:screen}
+.nexo-lab__stage--magnet .nexo-lab__orb--a{border-radius:50% 50% 48% 52%}
+.nexo-lab__stage--refraction .nexo-lab__orb{border-radius:24% 72% 33% 61%/66% 32% 74% 40%;filter:blur(1px) saturate(1.2)}
+.nexo-lab__stage--refraction .nexo-lab__orb--b{backdrop-filter:blur(15px);background:linear-gradient(105deg,rgba(134,217,255,.65),rgba(255,255,255,.1),rgba(98,226,201,.6))}
+.nexo-lab__stage--form .nexo-lab__orb--a{border-radius:18% 62% 45% 68% / 68% 48% 65% 27%;transform:translate(calc(-50% + var(--lab-x)*65px),calc(-50% + var(--lab-y)*50px)) rotate(calc(45deg + var(--lab-x)*55deg))}
+.nexo-lab__stage--form .nexo-lab__orb--b{border-radius:65% 30% 60% 30%}
+.nexo-lab__stage--pressed .nexo-lab__orb{filter:brightness(1.6) saturate(1.5)}
+.nexo-lab__stage-id,.nexo-lab__stage-hint{position:absolute;z-index:2;color:#c4d9d3;font:500 .63rem "DM Mono",monospace;letter-spacing:.08em}
+.nexo-lab__stage-id{top:26px;left:28px}.nexo-lab__stage-hint{bottom:27px;left:28px;right:25px;color:#b5c6bf}
+.package-morph{display:grid;grid-template-columns:42% 58%;position:relative;align-items:center;min-height:370px;margin:55px 0 70px;border:1px solid rgba(201,208,212,.2);border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 80% 53%,rgba(36,119,102,.25),transparent 55%),#101a1c}
+.package-morph__intro{grid-column:1;grid-row:1;padding:40px 40px 150px;align-self:start;z-index:2}
+.package-morph__intro strong{font:500 clamp(2.1rem,3vw,3.5rem)/1.04 "Space Grotesk",sans-serif;letter-spacing:-.065em;display:block;max-width:320px;margin-top:19px}
+.package-morph__stage{grid-column:2;grid-row:1;position:relative;min-height:350px;perspective:750px;isolation:isolate}
+.package-morph__stage:before{content:"";position:absolute;inset:10%;border-radius:50%;background:radial-gradient(ellipse,rgba(134,217,255,.12),transparent 65%);filter:blur(30px)}
+.package-morph__shape{position:absolute;top:50%;left:50%;width:175px;height:175px;border:18px solid #b9ff4f;border-radius:33% 67% 40% 60%/60% 40% 60% 40%;box-shadow:inset 0 0 25px rgba(134,217,255,.4),0 0 45px rgba(185,255,79,.12);transition:all .85s cubic-bezier(.16,1,.3,1)}
+.package-morph__shape--one{transform:translate(-55%,-55%) rotateX(50deg) rotateY(25deg) rotateZ(-25deg)}
+.package-morph__shape--two{border-color:#86d9ff;width:145px;height:145px;transform:translate(-43%,-42%) rotateX(-40deg) rotateY(-45deg) rotateZ(36deg)}
+.package-morph__shape--three{border-color:#4aaf9c;width:105px;height:105px;transform:translate(-48%,-48%) rotateX(-64deg) rotateZ(20deg)}
+.package-morph__stage--business .package-morph__shape--one{width:205px;height:205px;border-radius:20% 75% 26% 64%;transform:translate(-75%,-70%) rotateX(65deg) rotateY(-50deg) rotateZ(30deg)}
+.package-morph__stage--business .package-morph__shape--two{transform:translate(-7%,-27%) rotateX(70deg) rotateY(15deg) rotateZ(-43deg)}
+.package-morph__stage--business .package-morph__shape--three{transform:translate(-90%,-100%) rotateX(65deg) rotateY(-50deg) rotateZ(30deg)}
+.package-morph__stage--premium .package-morph__shape--one{width:235px;height:235px;border-radius:52% 35% 65% 29%;border-width:22px;transform:translate(-58%,-64%) rotateX(110deg) rotateY(65deg) rotateZ(80deg)}
+.package-morph__stage--premium .package-morph__shape--two{width:205px;height:205px;transform:translate(-35%,-30%) rotateX(-110deg) rotateY(-70deg) rotateZ(-80deg)}
+.package-morph__stage--premium .package-morph__shape--three{width:85px;height:85px;transform:translate(-30%,-100%) rotateZ(90deg)}
+.package-morph__stage-label{position:absolute;right:24px;top:25px;font:500 .63rem "DM Mono",monospace;letter-spacing:.14em;color:#b9ff4f}
+.package-morph__tabs{position:absolute;left:40px;bottom:30px;display:flex;gap:8px;flex-wrap:wrap;max-width:calc(100% - 80px);z-index:2}
+.package-morph__tab{border:1px solid rgba(201,208,212,.24);background:rgba(10,13,15,.58);border-radius:999px;color:#c9d0d4;font:500 .69rem "DM Mono",monospace;padding:11px 14px;cursor:pointer;transition:background .25s,color .25s,border-color .25s}
+.package-morph__tab span{margin-right:9px;opacity:.65}
+.package-morph__tab--active,.package-morph__tab:hover{background:#b9ff4f;border-color:#b9ff4f;color:#0a0d0f}
+.pricing-card{transform:translateY(var(--depth-shift,0px));transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .3s!important}
+.pricing-card:hover{transform:translateY(calc(var(--depth-shift,0px) - 7px))!important}
+.pricing-card--active{border-color:#b9ff4f!important;box-shadow:0 0 0 1px rgba(185,255,79,.32)!important}
+.service-card,.value-item,.process-step{--depth-shift:0px}
+.service-card h3{transition:transform .45s,color .3s}
+.service-card:hover h3{transform:translateX(12px)}
+.button,.nav-link,.nexo-lab__option{touch-action:manipulation}
+@media(max-width:850px){.nexo-lab{padding-block:95px}.nexo-lab__heading{grid-template-columns:1fr}.nexo-lab__layout{grid-template-columns:1fr}.nexo-lab__options{border-right:0;border-bottom:1px solid rgba(201,208,212,.2);padding:15px 0 30px}.nexo-lab__note{margin-top:22px}.nexo-lab__stage{min-height:420px}.package-morph{grid-template-columns:1fr;min-height:auto}.package-morph__intro{padding:32px 24px 0}.package-morph__stage{grid-column:1;grid-row:2;min-height:300px}.package-morph__tabs{position:relative;grid-column:1;grid-row:3;left:auto;bottom:auto;padding:0 22px 26px;max-width:100%}}
+@media(max-width:480px){.nexo-lab__heading h2{font-size:clamp(3rem,11vw,4rem)}.nexo-lab__stage{min-height:330px}.nexo-lab__orb--a{width:180px}.nexo-lab__orb--b{width:150px}.nexo-lab__orb--c{width:110px}.package-morph__tab{font-size:.62rem}.package-morph__shape{width:145px;height:145px}}
+@media(prefers-reduced-motion:reduce){.nexo-intro{display:none}.nexo-lab__orb,.package-morph__shape{transition:none}.pricing-card,.service-card h3{transform:none!important;transition:none}}

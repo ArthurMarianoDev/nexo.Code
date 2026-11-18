@@ -31,16 +31,16 @@
 .nexo-lab__option strong{font:500 clamp(1.35rem,2vw,2rem) "Space Grotesk",sans-serif;letter-spacing:-.06em}
 .nexo-lab__option--active,.nexo-lab__option:hover{color:#b9ff4f;padding-left:20px}
 .nexo-lab__note{margin-top:44px;font:500 .57rem/1.8 "DM Mono",monospace;letter-spacing:.11em;color:#809592}
-.nexo-lab__stage{--lab-x:0;--lab-y:0;position:relative;overflow:hidden;min-height:520px;isolation:isolate;perspective:900px;background:radial-gradient(circle at 55% 46%,rgba(52,143,124,.22),transparent 56%),#0b1315;cursor:crosshair}
+.nexo-lab__stage{--lab-x-shift:0px;--lab-y-shift:0px;--lab-rotate:0deg;position:relative;overflow:hidden;min-height:520px;isolation:isolate;perspective:900px;background:radial-gradient(circle at 55% 46%,rgba(52,143,124,.22),transparent 56%),#0b1315;cursor:crosshair}
 .nexo-lab__stage:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 59px,rgba(185,255,79,.045) 60px),repeating-linear-gradient(0deg,transparent 0,transparent 59px,rgba(185,255,79,.035) 60px);pointer-events:none}
 .nexo-lab__orb{position:absolute;top:50%;left:50%;width:min(44%,265px);aspect-ratio:1;transform-style:preserve-3d;border-radius:42% 58% 64% 36%/54% 39% 61% 46%;transition:transform .38s cubic-bezier(.2,.8,.1,1),border-radius .65s,filter .5s,background .5s;box-shadow:inset 15px 15px 30px rgba(255,255,255,.25),inset -28px -26px 38px rgba(1,20,24,.56),0 0 75px rgba(92,194,151,.15)}
-.nexo-lab__orb--a{background:linear-gradient(135deg,rgba(218,255,182,.95),rgba(109,223,180,.78) 38%,rgba(15,74,76,.88) 75%);transform:translate(calc(-60% + var(--lab-x)*44px),calc(-60% + var(--lab-y)*39px)) rotate(calc(var(--lab-x)*45deg)) rotateY(calc(var(--lab-x)*30deg));}
-.nexo-lab__orb--b{width:min(37%,230px);background:linear-gradient(135deg,rgba(134,217,255,.73),rgba(53,165,156,.66),rgba(8,39,47,.8));transform:translate(calc(-6% - var(--lab-x)*63px),calc(-25% - var(--lab-y)*39px)) rotate(calc(var(--lab-x)*-50deg));mix-blend-mode:screen}
-.nexo-lab__orb--c{width:min(27%,150px);background:radial-gradient(circle at 24% 24%,#f3ffd6,#a4ff70 34%,#276e5c 80%);transform:translate(calc(-110% + var(--lab-x)*82px),calc(5% + var(--lab-y)*54px)) rotate(calc(var(--lab-y)*32deg));mix-blend-mode:screen}
+.nexo-lab__orb--a{background:linear-gradient(135deg,rgba(218,255,182,.95),rgba(109,223,180,.78) 38%,rgba(15,74,76,.88) 75%);transform:translate(calc(-60% + var(--lab-x-shift)),calc(-60% + var(--lab-y-shift))) rotate(var(--lab-rotate));}
+.nexo-lab__orb--b{width:min(37%,230px);background:linear-gradient(135deg,rgba(134,217,255,.73),rgba(53,165,156,.66),rgba(8,39,47,.8));transform:translate(calc(-6% - var(--lab-x-shift)),calc(-25% - var(--lab-y-shift))) rotate(var(--lab-rotate));mix-blend-mode:screen}
+.nexo-lab__orb--c{width:min(27%,150px);background:radial-gradient(circle at 24% 24%,#f3ffd6,#a4ff70 34%,#276e5c 80%);transform:translate(calc(-110% + var(--lab-x-shift)),calc(5% + var(--lab-y-shift))) rotate(var(--lab-rotate));mix-blend-mode:screen}
 .nexo-lab__stage--magnet .nexo-lab__orb--a{border-radius:50% 50% 48% 52%}
 .nexo-lab__stage--refraction .nexo-lab__orb{border-radius:24% 72% 33% 61%/66% 32% 74% 40%;filter:blur(1px) saturate(1.2)}
 .nexo-lab__stage--refraction .nexo-lab__orb--b{backdrop-filter:blur(15px);background:linear-gradient(105deg,rgba(134,217,255,.65),rgba(255,255,255,.1),rgba(98,226,201,.6))}
-.nexo-lab__stage--form .nexo-lab__orb--a{border-radius:18% 62% 45% 68% / 68% 48% 65% 27%;transform:translate(calc(-50% + var(--lab-x)*65px),calc(-50% + var(--lab-y)*50px)) rotate(calc(45deg + var(--lab-x)*55deg))}
+.nexo-lab__stage--form .nexo-lab__orb--a{border-radius:18% 62% 45% 68% / 68% 48% 65% 27%;transform:translate(calc(-50% + var(--lab-x-shift)),calc(-50% + var(--lab-y-shift))) rotate(calc(45deg + var(--lab-rotate)))}
 .nexo-lab__stage--form .nexo-lab__orb--b{border-radius:65% 30% 60% 30%}
 .nexo-lab__stage--pressed .nexo-lab__orb{filter:brightness(1.6) saturate(1.5)}
 .nexo-lab__stage-id,.nexo-lab__stage-hint{position:absolute;z-index:2;color:#c4d9d3;font:500 .63rem "DM Mono",monospace;letter-spacing:.08em}

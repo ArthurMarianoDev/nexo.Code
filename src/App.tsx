@@ -281,6 +281,18 @@ function AmbientBackground() {
   )
 }
 
+function trackCardGlow(event: React.PointerEvent<HTMLElement>) {
+  const card = event.currentTarget
+  const bounds = card.getBoundingClientRect()
+  card.style.setProperty("--card-x", `${event.clientX - bounds.left}px`)
+  card.style.setProperty("--card-y", `${event.clientY - bounds.top}px`)
+}
+
+function resetCardGlow(event: React.PointerEvent<HTMLElement>) {
+  event.currentTarget.style.setProperty("--card-x", "50%")
+  event.currentTarget.style.setProperty("--card-y", "50%")
+}
+
 function PurchaseForm({
   packageName,
   onClose,
@@ -507,14 +519,27 @@ function StorePage() {
                 conversa breve, você recebe escopo, prazo e condições finais.
               </p>
             </div>
+            <div className="store-promo" data-reveal role="note">
+              <div className="store-promo__signal">
+                <span />
+                OFERTA PARA NOVOS CLIENTES
+              </div>
+              <div className="store-promo__message">
+                <Icon name="spark" className="size-6" />
+                <strong>50% DE DESCONTO NO SEU PRIMEIRO SITE!</strong>
+              </div>
+              <p>Condição especial sujeita à disponibilidade de agenda.</p>
+            </div>
             <div className="pricing-grid">
               {packages.map((item) => (
                 <article
-                  className={`pricing-card ${
+                  className={`pricing-card interactive-card ${
                     item.featured ? "pricing-card--featured" : ""
                   }`}
                   key={item.name}
                   data-reveal
+                  onPointerMove={trackCardGlow}
+                  onPointerLeave={resetCardGlow}
                 >
                   {item.featured && (
                     <span className="pricing-badge">RECOMENDADO</span>
@@ -587,7 +612,13 @@ function StorePage() {
                   "Colocamos tudo no ar, testamos e orientamos os próximos passos.",
                 ],
               ].map(([number, title, description]) => (
-                <article className="assurance-item" key={number} data-reveal>
+                <article
+                  className="assurance-item interactive-card"
+                  key={number}
+                  data-reveal
+                  onPointerMove={trackCardGlow}
+                  onPointerLeave={resetCardGlow}
+                >
                   <span>{number}</span>
                   <h3>{title}</h3>
                   <p>{description}</p>
@@ -848,7 +879,13 @@ function LandingPage() {
 
           <div className="service-grid">
             {services.map((service) => (
-              <article className="service-card" key={service.title} data-reveal>
+              <article
+                className="service-card interactive-card"
+                key={service.title}
+                data-reveal
+                onPointerMove={trackCardGlow}
+                onPointerLeave={resetCardGlow}
+              >
                 <div className="flex items-start justify-between">
                   <div className="service-icon">
                     <Icon name={service.icon} className="size-6" />
@@ -911,7 +948,13 @@ function LandingPage() {
                   "Desenvolvimento responsivo, leve e organizado para evoluir junto com o negócio.",
                 ],
               ].map(([number, title, description]) => (
-                <article className="value-item" key={number} data-reveal>
+                <article
+                  className="value-item interactive-card"
+                  key={number}
+                  data-reveal
+                  onPointerMove={trackCardGlow}
+                  onPointerLeave={resetCardGlow}
+                >
                   <span>{number}</span>
                   <div>
                     <h3>{title}</h3>
@@ -960,7 +1003,13 @@ function LandingPage() {
                 "Testamos, refinamos e colocamos seu novo site no ar com todo o suporte.",
               ],
             ].map(([number, title, description]) => (
-              <article className="process-step" key={number} data-reveal>
+              <article
+                className="process-step interactive-card"
+                key={number}
+                data-reveal
+                onPointerMove={trackCardGlow}
+                onPointerLeave={resetCardGlow}
+              >
                 <span>{number}</span>
                 <div className="process-line">
                   <i />

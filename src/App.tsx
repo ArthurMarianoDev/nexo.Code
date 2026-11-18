@@ -1,3 +1,5 @@
+import CursorTrail from "./components/CursorTrail"
+import ScrollArtifact from "./components/ScrollArtifact"
 import SignalMatter from "./components/SignalMatter"
 import { useEffect, useRef, useState } from "react"
 
@@ -813,6 +815,16 @@ function LandingPage() {
           </div>
         </section>
 
+        <div className="kinetic-interlude shell">
+          <div className="kinetic-interlude__copy" data-reveal>
+            <p className="kicker">N/C — DIGITAL MATTER / 002</p>
+            <h2>O movimento<br />faz parte da <em>ideia.</em></h2>
+            <p>Cada interação é uma oportunidade para criar uma experiência que permanece na memória.</p>
+            <span className="kinetic-interlude__hint">↓ EXPLORE E VEJA A FORMA REAGIR</span>
+          </div>
+          <ScrollArtifact />
+        </div>
+
         <section id="servicos" className="section shell">
           <div className="section-heading" data-reveal>
             <div>
@@ -1172,19 +1184,94 @@ function isStoreRoute() {
 
 function App() {
   const [isStore, setIsStore] = useState(isStoreRoute)
+  const [transition, setTransition] = useState<"idle" | "out" | "in">("idle")
+  const transitionRef = useRef<"idle" | "out" | "in">("idle")
+  const timers = useRef<number[]>([])
+  const navigateRef = useRef<(href: string) => void>(() => {})
+
+  const clearTimers = () => {
+    timers.current.forEach(window.clearTimeout)
+    timers.current = []
+  }
+  navigateRef.current = (href: string) => {
+    if (transitionRef.current !== "idle") return
+    const target = new URL(href, location.href)
+    const toStore = target.hash.startsWith("#/loja")
+    if (toStore === isStoreRoute()) {
+      // Keep normal in-page anchor behavior if no full route change is needed.
+      location.assign(target.href)
+      return
+    }
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      history.pushState({}, "", target.pathname + target.search + target.hash)
+      setIsStore(toStore)
+      window.scrollTo(0, 0)
+      return
+    }
+    transitionRef.current = "out"
+    setTransition("out")
+    timers.current.push(window.setTimeout(() => {
+      history.pushState({}, "", target.pathname + target.search + target.hash)
+      setIsStore(toStore)
+      window.scrollTo(0, 0)
+      transitionRef.current = "in"
+      setTransition("in")
+      if (!toStore && target.hash && !target.hash.startsWith("#/")) {
+        timers.current.push(window.setTimeout(() => {
+          document.querySelector(target.hash)?.scrollIntoView({ behavior: "smooth" })
+        }, 180))
+      }
+      timers.current.push(window.setTimeout(() => {
+        transitionRef.current = "idle"
+        setTransition("idle")
+      }, 860))
+    }, 610))
+  }
 
   useEffect(() => {
-    const syncRoute = () => setIsStore(isStoreRoute())
+    const syncRoute = () => {
+      clearTimers()
+      transitionRef.current = "idle"
+      setTransition("idle")
+      setIsStore(isStoreRoute())
+    }
+    const intercept = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+      if (!(event.target instanceof Element)) return
+      const anchor = event.target.closest<HTMLAnchorElement>("a[href]")
+      if (!anchor || anchor.hasAttribute("download") || (anchor.target && anchor.target !== "_self")) return
+      const next = new URL(anchor.href, window.location.href)
+      if (next.origin !== window.location.origin) return
+      const fromStore = isStoreRoute()
+      const toStore = next.hash.startsWith("#/loja")
+      if (fromStore === toStore) return
+      event.preventDefault()
+      navigateRef.current(next.href)
+    }
     window.addEventListener("hashchange", syncRoute)
     window.addEventListener("popstate", syncRoute)
-
+    document.addEventListener("click", intercept, true)
     return () => {
+      clearTimers()
       window.removeEventListener("hashchange", syncRoute)
       window.removeEventListener("popstate", syncRoute)
+      document.removeEventListener("click", intercept, true)
     }
   }, [])
 
-  return isStore ? <StorePage /> : <LandingPage />
+  return (
+    <>
+      <CursorTrail />
+      {isStore ? <StorePage /> : <LandingPage />}
+      <div className={`nexo-page-transition nexo-page-transition--${transition}`}
+        role="presentation" aria-hidden="true">
+        <div className="nexo-page-transition__surface" />
+        <div className="nexo-page-transition__halo" />
+        <div className="nexo-page-transition__symbol">nexo<span>.</span></div>
+        <div className="nexo-page-transition__micro">TRANSFORMANDO IDEIAS EM PRESENÇA DIGITAL</div>
+      </div>
+    </>
+  )
 }
 
 export default App

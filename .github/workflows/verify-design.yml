@@ -6,6 +6,7 @@ on:
       - design/digital-matter-immersive
       - feat/kinetic-interactions-transitions
       - feat/immersive-studio-v2
+      - fix/store-hover-visibility-and-contrast
   pull_request:
     branches:
       - main

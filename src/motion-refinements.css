@@ -17,3 +17,11 @@
 .button:hover:after{left:calc(100% + 80px)}
 .pricing-card button:focus-visible,.package-morph__tab:focus-visible,.nexo-lab__option:focus-visible{outline:2px solid #86d9ff;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.nexo-page-transition__halo:before,.nexo-page-transition__halo:after,.button:after{animation:none!important;transition:none!important}}
+
+/* Explicit WCAG-friendly contrast on the bright final call-to-action panel. */
+.cta-section .cta-response-note,
+.cta-section .shell .cta-response-note {
+  color:#0a0d0f!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}

@@ -387,6 +387,7 @@ function PurchaseForm({
             <input
               type="text"
               name="name"
+              maxLength={100}
               autoComplete="name"
               placeholder="Como podemos chamar você?"
               required
@@ -398,6 +399,7 @@ function PurchaseForm({
             <input
               type="email"
               name="email"
+              maxLength={254}
               autoComplete="email"
               placeholder="voce@empresa.com"
               required
@@ -408,6 +410,10 @@ function PurchaseForm({
             <input
               type="tel"
               name="phone"
+              maxLength={22}
+              minLength={8}
+              pattern="[+0-9() -]{8,22}"
+              title="Digite um telefone válido com 8 a 22 caracteres, usando números, espaços, parênteses, hífen ou +."
               autoComplete="tel"
               inputMode="tel"
               placeholder="(00) 00000-0000"
@@ -420,12 +426,13 @@ function PurchaseForm({
             </span>
             <textarea
               name="message"
+              maxLength={1200}
               rows={4}
               placeholder="Conte sobre seu negócio, objetivo ou prazo desejado."
             />
           </label>
           <div className="purchase-form__footer">
-            <p>Seus dados serão usados somente para este atendimento.</p>
+            <p>Ao continuar, seus dados serão compartilhados com o WhatsApp para atendimento. Leia a <a href={`${homeHref}privacidade.html`} target="_blank" rel="noopener noreferrer">Política de Privacidade</a>.</p>
             <button className="button" type="submit">
               Continuar no WhatsApp <Icon name="arrow" className="size-4" />
             </button>
@@ -655,6 +662,7 @@ function StorePage() {
       <footer className="portfolio-footer">
         <div className="shell footer-bottom">
           <span>© {new Date().getFullYear()} Nexo.Code. Todos os direitos reservados.</span>
+          <a href={`${homeHref}privacidade.html`}>Política de Privacidade</a>
           <a href={homeHref}>
             nexo<span>.</span>
           </a>
@@ -1145,6 +1153,7 @@ function LandingPage() {
             <a href={storeHref}>Loja</a>
             <a href="#processo">Processo</a>
             <a href="#sobre">Sobre</a>
+            <a href={`${homeHref}privacidade.html`}>Privacidade</a>
           </div>
           <div>
             <strong>CONTATO</strong>

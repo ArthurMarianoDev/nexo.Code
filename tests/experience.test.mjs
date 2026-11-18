@@ -67,3 +67,14 @@ test("original experience remains accessible from both pages", () => {
     assert.ok(app.includes(key), `Experience component missing: ${key}`)
   }
 })
+
+test("persistent studio systems render with safeguards", () => {
+  const studio = src("src/components/StudioSystems.tsx")
+  const css = src("src/beyond-interface.css")
+  for(const value of ["<MatterContinuum", "<StudioNavigation", "<SoundToggle"]) assert.ok(app.includes(value))
+  for(const value of ["visibilitychange", "prefers-reduced-motion", "aria-expanded", "aria-pressed", "pointer-events:none", "mix-blend-mode:screen"]) {
+    assert.ok((studio+css).includes(value), `Expected studio safeguard: ${value}`)
+  }
+  assert.match(css, /@media\(max-width:767px\)/)
+  assert.match(src("src/main.tsx"), /beyond-interface.css/)
+})

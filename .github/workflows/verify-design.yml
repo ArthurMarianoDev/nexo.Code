@@ -4,6 +4,7 @@ on:
     branches:
       - design/editorial-nexocode-2026
       - design/digital-matter-immersive
+      - feat/kinetic-interactions-transitions
   pull_request:
     branches:
       - main

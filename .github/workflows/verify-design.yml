@@ -7,6 +7,7 @@ on:
       - feat/kinetic-interactions-transitions
       - feat/immersive-studio-v2
       - fix/store-hover-visibility-and-contrast
+      - feat/beyond-interface-cinematic
   pull_request:
     branches:
       - main

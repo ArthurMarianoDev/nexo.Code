@@ -17,9 +17,12 @@ export default function CursorTrail() {
     if (!ctx) return
 
     type Point = { x: number; y: number; age: number }
+    type Spark = { x: number; y: number; vx: number; vy: number; life: number }
+    let sparks: Spark[] = []
     let points: Point[] = []
     let x = -100, y = -100, tx = -100, ty = -100
     let active = false, isLink = false, burst = 0
+    let magnetX = 0, magnetY = 0
     let raf = 0, previous = 0
     let stopped = false
     const resize = () => {
@@ -34,10 +37,24 @@ export default function CursorTrail() {
       ty = event.clientY
       if (!active) { x = tx; y = ty }
       active = true
-      isLink = !!(event.target instanceof Element && event.target.closest("a, button, [role='button']"))
+      const link = event.target instanceof Element ? event.target.closest<HTMLElement>("a, button, [role='button']") : null
+      isLink = !!link
+      if (link) {
+        const bounds = link.getBoundingClientRect()
+        magnetX = bounds.left + bounds.width / 2
+        magnetY = bounds.top + bounds.height / 2
+      }
     }
     const leave = () => { active = false }
-    const down = () => { burst = 1 }
+    const down = () => {
+      if (!active) return
+      burst = 1
+      for (let i = 0; i < 14; i++) {
+        const angle = i * Math.PI * 2 / 14
+        const speed = 1.7 + (i % 4) * .75
+        sparks.push({ x: tx, y: ty, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed, life: 1 })
+      }
+    }
     const paint = (now: number) => {
       if (stopped) return
       raf = requestAnimationFrame(paint)
@@ -65,7 +82,28 @@ export default function CursorTrail() {
         ctx.lineCap = "round"
         ctx.stroke()
       }
+      for (const particle of sparks) {
+        particle.x += particle.vx * delta * 2
+        particle.y += particle.vy * delta * 2
+        particle.vx *= .96
+        particle.vy *= .96
+        particle.life -= .035 * delta
+        if (particle.life <= 0) continue
+        ctx.beginPath()
+        ctx.arc(particle.x, particle.y, Math.max(.5, particle.life*2.1), 0, Math.PI*2)
+        ctx.fillStyle = "rgba(185,255,79," + (particle.life*.8) + ")"
+        ctx.fill()
+      }
+      sparks = sparks.filter(p => p.life > 0)
       if (active) {
+        if (isLink) {
+          ctx.beginPath()
+          ctx.moveTo(tx,ty)
+          ctx.quadraticCurveTo((magnetX+tx)/2,(magnetY+ty)/2,magnetX,magnetY)
+          ctx.strokeStyle = "rgba(185,255,79,.18)"
+          ctx.lineWidth = .8
+          ctx.stroke()
+        }
         ctx.beginPath()
         ctx.arc(tx, ty, isLink ? 15 : 5.5, 0, Math.PI * 2)
         ctx.strokeStyle = isLink ? "rgba(185,255,79,.85)" : "rgba(134,217,255,.65)"

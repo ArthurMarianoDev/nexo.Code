@@ -5,6 +5,7 @@ on:
       - design/editorial-nexocode-2026
       - design/digital-matter-immersive
       - feat/kinetic-interactions-transitions
+      - feat/immersive-studio-v2
   pull_request:
     branches:
       - main
@@ -20,5 +21,7 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: TypeScript check
         run: npx tsc --noEmit
+      - name: Experience regression tests
+        run: npm test
       - name: Production build
         run: npm run build

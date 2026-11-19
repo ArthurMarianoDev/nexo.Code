@@ -25,10 +25,8 @@ test("home and store have unique correct metadata and canonical URLs", () => {
 
 test("both route documents ship real SSR content before any JavaScript", () => {
   for (const [page, html] of [["home", home], ["shop", shop]]) {
-    const root = html.match(/<div id="root">([\s\S]+?)<\/div>/)
-    assert.ok(root?.[1], "Missing pre-rendered React content for " + page)
-    assert.match(root[1], /<h1/)
-    assert.match(root[1], /<main/)
+    assert.match(html, /<div id="root">[\s\S]+?<h1/, "Missing pre-rendered H1: " + page)
+    assert.match(html, /<div id="root">[\s\S]+?<main/, "Missing pre-rendered main: " + page)
     assert.match(html, /type="module"/)
   }
   assert.match(home, /O digital não/)

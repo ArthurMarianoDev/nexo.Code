@@ -138,3 +138,26 @@ test("all six visual pillars are connected in the rendered application",()=>{
   assert.match(art,/\.pricing-card,.pricing-card:hover/)
   for(const mode of ["field","optics","ribbon","type","constellation"])assert.ok(lab.includes('mode==="'+mode+'"'),"Missing interactive Lab mode: "+mode)
 })
+
+test("the full manifesto headline remains readable on small screens", () => {
+  const css = src("src/matter-engine-v3.css")
+  assert.match(app,/studio-manifesto__line">Não criamos/)
+  assert.match(app,/studio-manifesto__line">mais do mesmo\./)
+  assert.match(app,/Criamos o <strong>próximo\.<\/strong>/)
+  assert.match(css,/studio-manifesto h2\.studio-manifesto__title/)
+  assert.match(css,/animation:none!important;clip-path:none!important/)
+  assert.match(css,/@media\(max-width:350px\)/)
+  assert.match(css,/\.studio-manifesto__line::after\{content:none!important\}/)
+})
+
+test("silk cursor uses smooth hiDPI vector paths with a safe pixel budget", () => {
+  const cursor = src("src/components/CursorTrail.tsx")
+  assert.match(cursor,/new Path2D\(\)/)
+  assert.match(cursor,/quadraticCurveTo/)
+  assert.match(cursor,/createLinearGradient/)
+  assert.match(cursor,/devicePixelRatio/)
+  assert.match(cursor,/3800000/)
+  assert.match(cursor,/prefers-reduced-motion/)
+  assert.match(cursor,/pointer: fine/)
+  assert.match(cursor,/pointer-events:none|className="nexo-cursor-trail"/)
+})

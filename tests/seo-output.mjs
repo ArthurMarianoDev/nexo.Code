@@ -6,14 +6,17 @@ import { join } from "node:path"
 const read = path => readFileSync(join(process.cwd(), path), "utf8")
 const home = read("dist/index.html")
 const shop = read("dist/loja/index.html")
+const projects = read("dist/projetos/index.html")
 const base = "https://nexo-code.pages.dev"
 
-test("home and store have unique correct metadata and canonical URLs", () => {
+test("home, store and projects have unique correct metadata and canonical URLs", () => {
   assert.match(home, /<title>Criação de Sites Profissionais e Landing Pages \| Nexo\.Code<\/title>/)
   assert.match(shop, /<title>Criação de Sites: Pacotes e Valores \| Nexo\.Code<\/title>/)
   assert.match(home, /<link rel="canonical" href="https:\/\/nexo-code\.pages\.dev\/">/)
   assert.match(shop, /<link rel="canonical" href="https:\/\/nexo-code\.pages\.dev\/loja\/">/)
-  for (const html of [home, shop]) {
+  assert.match(projects, /<title>Projetos Autorais e Experiências Digitais \\| Nexo\\.Code<\\/title>/)
+  assert.match(projects, /<link rel="canonical" href="https:\\/\\/nexo-code\\.pages\\.dev\\/projetos\\/">/)
+  for (const html of [home, shop, projects]) {
     assert.equal((html.match(/rel="canonical"/g) ?? []).length, 1)
     assert.equal((html.match(/name="description"/g) ?? []).length, 1)
     assert.equal((html.match(/property="og:title"/g) ?? []).length, 1)
@@ -24,11 +27,13 @@ test("home and store have unique correct metadata and canonical URLs", () => {
 })
 
 test("both route documents ship real SSR content before any JavaScript", () => {
-  for (const [page, html] of [["home", home], ["shop", shop]]) {
+  for (const [page, html] of [["home", home], ["shop", shop], ["projects", projects]]) {
     assert.match(html, /<div id="root">[\s\S]+?<h1/, "Missing pre-rendered H1: " + page)
     assert.match(html, /<div id="root">[\s\S]+?<main/, "Missing pre-rendered main: " + page)
     assert.match(html, /type="module"/)
   }
+  assert.match(projects, /Ideias que não/)
+  assert.match(projects, /AUREA RESIDENCES/)
   assert.match(home, /O digital não/)
   assert.match(shop, /Landing Essencial/)
   assert.match(shop, /Site Profissional/)
@@ -44,10 +49,10 @@ test("schema.org JSON-LD is valid and never invents client reviews", () => {
     const data = JSON.parse(match[1])
     const graph = data["@graph"]
     for (const type of ["Organization", "WebSite", "WebPage", "Service"]) {
-      if (type === "WebPage" && html === shop) continue
+      if (type === "WebPage" && html !== home) continue
       assert.ok(graph.some(node => node["@type"] === type), type + " not found")
     }
-    assert.ok(graph.some(node => node["@type"] === (html === shop ? "CollectionPage" : "WebPage")))
+    assert.ok(graph.some(node => node["@type"] === (html === home ? "WebPage" : "CollectionPage")))
     assert.ok(!html.includes('"aggregateRating"'))
     assert.ok(!html.includes('"review"'))
   }
@@ -62,5 +67,6 @@ test("robots and sitemap expose only the canonical public destinations", () => {
   assert.match(robots,/Sitemap: https:\/\/nexo-code\.pages\.dev\/sitemap\.xml/)
   assert.ok(sitemap.includes(base + "/"))
   assert.ok(sitemap.includes(base + "/loja/"))
+  assert.ok(sitemap.includes(base + "/projetos/"))
   assert.doesNotMatch(sitemap,/#\/loja/)
 })

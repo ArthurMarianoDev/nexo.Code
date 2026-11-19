@@ -10,6 +10,7 @@ on:
       - feat/beyond-interface-cinematic
       - security/harden-headers-privacy-audit-2026
       - feat/nexo-matter-engine-v3
+      - fix/manifesto-type-and-silk-cursor
   pull_request:
     branches:
       - main

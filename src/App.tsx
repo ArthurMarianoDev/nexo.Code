@@ -499,7 +499,7 @@ function StorePage() {
   useScrollReveal()
 
   useEffect(() => {
-    syncSeoHead(true)
+    syncSeoHead("store")
     window.scrollTo(0, 0)
   }, [])
 

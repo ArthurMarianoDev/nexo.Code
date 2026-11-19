@@ -14,8 +14,8 @@ test("home, store and projects have unique correct metadata and canonical URLs",
   assert.match(shop, /<title>Criação de Sites: Pacotes e Valores \| Nexo\.Code<\/title>/)
   assert.match(home, /<link rel="canonical" href="https:\/\/nexo-code\.pages\.dev\/">/)
   assert.match(shop, /<link rel="canonical" href="https:\/\/nexo-code\.pages\.dev\/loja\/">/)
-  assert.match(projects, /<title>Projetos Autorais e Experiências Digitais \\| Nexo\\.Code<\\/title>/)
-  assert.match(projects, /<link rel="canonical" href="https:\\/\\/nexo-code\\.pages\\.dev\\/projetos\\/">/)
+  assert.ok(projects.includes('<title>Projetos Autorais e Experiências Digitais | Nexo.Code</title>'))
+  assert.ok(projects.includes('<link rel="canonical" href="https://nexo-code.pages.dev/projetos/">'))
   for (const html of [home, shop, projects]) {
     assert.equal((html.match(/rel="canonical"/g) ?? []).length, 1)
     assert.equal((html.match(/name="description"/g) ?? []).length, 1)
@@ -43,7 +43,7 @@ test("both route documents ship real SSR content before any JavaScript", () => {
 })
 
 test("schema.org JSON-LD is valid and never invents client reviews", () => {
-  for (const html of [home, shop]) {
+  for (const html of [home, shop, projects]) {
     const match = html.match(/<script type="application\/ld\+json">([^<]+)<\/script>/)
     assert.ok(match, "Missing JSON-LD")
     const data = JSON.parse(match[1])

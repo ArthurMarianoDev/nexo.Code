@@ -301,9 +301,11 @@ function resetCardGlow(event: React.PointerEvent<HTMLElement>) {
 function PurchaseForm({
   packageName,
   onClose,
+  general = false,
 }: {
   packageName: string
   onClose: () => void
+  general?: boolean
 }) {
   useEffect(() => {
     const previousOverflow = document.body.style.overflow
@@ -330,7 +332,7 @@ function PurchaseForm({
     const message = [
       "Olá, Nexo Code! Tenho interesse em contratar um projeto.",
       "",
-      `Pacote: ${packageName}`,
+      general ? `Interesse: ${packageName}` : `Pacote: ${packageName}`,
       `Nome: ${name}`,
       `E-mail: ${email}`,
       `Telefone: ${phone}`,
@@ -472,7 +474,8 @@ function StorePage() {
           </a>
           <a
             className="button button--small hidden sm:inline-flex"
-            href={contactHref}
+            href="#contato"
+            data-contact-form="Iniciar projeto"
           >
             Começar projeto
             <Icon name="arrow" className="size-4" />
@@ -651,7 +654,8 @@ function StorePage() {
             </h2>
             <a
               className="button"
-              href={`mailto:${contactEmail}?subject=Projeto%20personalizado`}
+              href="#contato"
+              data-contact-form="Proposta personalizada"
             >
               Solicitar proposta personalizada{" "}
               <Icon name="arrow" className="size-5" />
@@ -734,6 +738,7 @@ function LandingPage() {
           <a
             className="button button--small hidden md:inline-flex"
             href="#contato"
+            data-contact-form="Iniciar projeto"
           >
             Começar projeto
             <Icon name="arrow" className="size-4" />
@@ -763,6 +768,7 @@ function LandingPage() {
             <a
               className="button mt-3 justify-center"
               href="#contato"
+              data-contact-form="Iniciar projeto"
               onClick={closeMenu}
             >
               Começar projeto
@@ -794,7 +800,7 @@ function LandingPage() {
                 tecnologia e um propósito claro: fazer sua marca se destacar.
               </p>
               <div className="flex flex-col gap-3 sm:flex-row reveal reveal--delay-3">
-                <a className="button" href="#contato">
+                <a className="button" href="#contato" data-contact-form="Iniciar projeto">
                   Iniciar projeto
                   <Icon name="arrow" className="size-5" />
                 </a>
@@ -1148,7 +1154,8 @@ function LandingPage() {
             </p>
             <a
               className="button button--light mt-8"
-              href={`mailto:${contactEmail}`}
+              href="#contato"
+              data-contact-form="Diagnóstico inicial"
             >
               Solicitar diagnóstico inicial{" "}
               <Icon name="arrow" className="size-5" />
@@ -1222,6 +1229,7 @@ function isStoreRoute() {
 
 function App() {
   const [isStore, setIsStore] = useState(isStoreRoute)
+  const [contactRequest, setContactRequest] = useState<string | null>(null)
   const [transition, setTransition] = useState<"idle" | "out" | "in">("idle")
   const transitionRef = useRef<"idle" | "out" | "in">("idle")
   const timers = useRef<number[]>([])
@@ -1282,6 +1290,12 @@ function App() {
     const intercept = (event: MouseEvent) => {
       if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
       if (!(event.target instanceof Element)) return
+      const contactTrigger = event.target.closest<HTMLAnchorElement>("a[data-contact-form]")
+      if(contactTrigger){
+        event.preventDefault()
+        setContactRequest(contactTrigger.dataset.contactForm || "Iniciar projeto")
+        return
+      }
       const anchor = event.target.closest<HTMLAnchorElement>("a[href]")
       if (!anchor || anchor.hasAttribute("download") || (anchor.target && anchor.target !== "_self")) return
       const next = new URL(anchor.href, window.location.href)
@@ -1311,6 +1325,13 @@ function App() {
       <StudioNavigation />
       <SoundToggle />
       {isStore ? <StorePage /> : <LandingPage />}
+      {contactRequest && (
+        <PurchaseForm
+          packageName={contactRequest}
+          general
+          onClose={() => setContactRequest(null)}
+        />
+      )}
       <KineticTypography key={isStore ? "store-typography" : "home-typography"} />
       <PageDepth key={isStore ? "store-depth" : "home-depth"} />
       <div className={`nexo-page-transition nexo-page-transition--${transition}`}

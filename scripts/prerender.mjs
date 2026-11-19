@@ -14,6 +14,7 @@ import { join } from "node:path"
 const ORIGIN = "https://nexo-code.pages.dev"
 const HOME_URL = ORIGIN + "/"
 const SHOP_URL = ORIGIN + "/loja/"
+const PROJECTS_URL = ORIGIN + "/projetos/"
 const LOGO = ORIGIN + "/social/nexo-profile.png"
 
 const pages = [
@@ -31,6 +32,14 @@ const pages = [
     title: "Criação de Sites: Pacotes e Valores | Nexo.Code",
     description: "Conheça os pacotes de criação de sites da Nexo.Code: Landing Essencial, Site Profissional e Experiência Premium. Confira valores e solicite proposta.",
     url: SHOP_URL,
+    type: "CollectionPage",
+  },
+  {
+    path: "/projetos/",
+    destination: "projetos/index.html",
+    title: "Projetos Autorais e Experiências Digitais | Nexo.Code",
+    description: "Explore os projetos autorais da Nexo.Code: estudos conceituais, design experimental e plataformas digitais criadas em nosso laboratório.",
+    url: PROJECTS_URL,
     type: "CollectionPage",
   },
 ]

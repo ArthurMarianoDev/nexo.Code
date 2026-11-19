@@ -26,7 +26,7 @@ const SEO_META = {
 
 function syncSeoHead(shop: boolean) {
   const data = shop ? SEO_META.shop : SEO_META.home
-  const canonical = "https://nexo-code.studiodigital.workers.dev/" + data.path
+  const canonical = "https://nexo-code.pages.dev/" + data.path
   document.title = data.title
   const upsertMeta = (selector: string, attrs: Record<string, string>) => {
     let node = document.head.querySelector<HTMLMetaElement>(selector)

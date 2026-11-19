@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nexo-code.studiodigital.workers.dev/sitemap.xml
+Sitemap: https://nexo-code.pages.dev/sitemap.xml

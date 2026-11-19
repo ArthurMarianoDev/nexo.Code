@@ -11,8 +11,8 @@ const base = "https://nexo-code.pages.dev"
 test("home and store have unique correct metadata and canonical URLs", () => {
   assert.match(home, /<title>Criação de Sites Profissionais e Landing Pages \| Nexo\.Code<\/title>/)
   assert.match(shop, /<title>Criação de Sites: Pacotes e Valores \| Nexo\.Code<\/title>/)
-  assert.match(home, /<link rel="canonical" href="https:\/\/nexo-code\.studiodigital\.workers\.dev\/">/)
-  assert.match(shop, /<link rel="canonical" href="https:\/\/nexo-code\.studiodigital\.workers\.dev\/loja\/">/)
+  assert.match(home, /<link rel="canonical" href="https:\/\/nexo-code\.pages\.dev\/">/)
+  assert.match(shop, /<link rel="canonical" href="https:\/\/nexo-code\.pages\.dev\/loja\/">/)
   for (const html of [home, shop]) {
     assert.equal((html.match(/rel="canonical"/g) ?? []).length, 1)
     assert.equal((html.match(/name="description"/g) ?? []).length, 1)
@@ -59,7 +59,7 @@ test("robots and sitemap expose only the canonical public destinations", () => {
   const robots=read("dist/robots.txt")
   const sitemap=read("dist/sitemap.xml")
   assert.match(robots,/Allow: \/$/m)
-  assert.match(robots,/Sitemap: https:\/\/nexo-code\.studiodigital\.workers\.dev\/sitemap\.xml/)
+  assert.match(robots,/Sitemap: https:\/\/nexo-code\.pages\.dev\/sitemap\.xml/)
   assert.ok(sitemap.includes(base + "/"))
   assert.ok(sitemap.includes(base + "/loja/"))
   assert.doesNotMatch(sitemap,/#\/loja/)

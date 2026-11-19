@@ -13,6 +13,7 @@ on:
       - fix/manifesto-type-and-silk-cursor
       - fix/unified-contact-form-fluid-cursor-v4
       - feat/seo-prerender-clean-routes
+      - fix/pages-domain-canonical-seo
   pull_request:
     branches:
       - main

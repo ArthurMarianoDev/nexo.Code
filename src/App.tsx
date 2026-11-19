@@ -1,4 +1,5 @@
 import MatterEngine from "./components/MatterEngine"
+import { AuthorialProjectsPage } from "./components/AuthorialProjects"
 import { StudioNavigation, SoundToggle } from "./components/StudioSystems"
 import { KineticTypography, IntroSequence, NexoLab, PackageMorph, PageDepth } from "./components/ImmersiveExperiences"
 import CursorTrail from "./components/CursorTrail"
@@ -8,6 +9,7 @@ import { useEffect, useRef, useState } from "react"
 const homeHref = import.meta.env.BASE_URL
 const contactHref = `${homeHref}#contato`
 const storeHref = `${homeHref}loja/`
+const projectsHref = `${homeHref}projetos/`
 const contactEmail = "nexocodebrasil@gmail.com"
 const whatsappUrl = "https://wa.me/5594991164544"
 
@@ -22,10 +24,15 @@ const SEO_META = {
     description: "Conheça os pacotes de criação de sites da Nexo.Code: Landing Essencial, Site Profissional e Experiência Premium. Confira valores e solicite proposta.",
     path: "loja/",
   },
+  projects: {
+    title: "Projetos Autorais e Experiências Digitais | Nexo.Code",
+    description: "Explore os projetos autorais da Nexo.Code: estudos conceituais, design experimental e plataformas digitais criadas em nosso laboratório.",
+    path: "projetos/",
+  },
 } as const
 
-function syncSeoHead(shop: boolean) {
-  const data = shop ? SEO_META.shop : SEO_META.home
+function syncSeoHead(route: "home" | "store" | "projects") {
+  const data = route === "store" ? SEO_META.shop : route === "projects" ? SEO_META.projects : SEO_META.home
   const canonical = "https://nexo-code.pages.dev/" + data.path
   document.title = data.title
   const upsertMeta = (selector: string, attrs: Record<string, string>) => {
@@ -731,7 +738,7 @@ function LandingPage() {
   useScrollReveal()
 
   useEffect(() => {
-    syncSeoHead(false)
+    syncSeoHead("home")
     const onScroll = () => setScrolled(window.scrollY > 24)
     onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
@@ -761,6 +768,9 @@ function LandingPage() {
           <div className="hidden items-center gap-9 md:flex">
             <a className="nav-link" href="#servicos">
               Serviços
+            </a>
+            <a className="nav-link" href={projectsHref}>
+              Projetos
             </a>
             <a className="nav-link nav-link--store" href={storeHref}>
               Loja
@@ -803,6 +813,9 @@ function LandingPage() {
                 {item.charAt(0).toUpperCase() + item.slice(1)}
               </a>
             ))}
+            <a href={projectsHref} onClick={closeMenu}>
+              Projetos autorais
+            </a>
             <a href={storeHref} onClick={closeMenu}>
               Loja — ver pacotes e valores
             </a>
@@ -1206,6 +1219,16 @@ function LandingPage() {
             </span>
           </div>
         </section>
+        <section className="authorial-home-teaser" aria-labelledby="authorial-home-title">
+          <div className="shell authorial-home-teaser__inner">
+            <div>
+              <span className="authorial-home-teaser__eyebrow">N/C LAB — PROJETOS AUTORAIS</span>
+              <h2 id="authorial-home-title">Nosso trabalho.<br /><em>Sem limites.</em></h2>
+              <p>Experimentos e plataformas criados para transformar ideias em experiências memoráveis. Conheça nosso laboratório autoral.</p>
+            </div>
+            <a href={projectsHref} className="authorial-home-teaser__link">Explorar projetos <span aria-hidden="true">↗</span></a>
+          </div>
+        </section>
       </main>
 
       <footer>
@@ -1222,6 +1245,7 @@ function LandingPage() {
           <div>
             <strong>NAVEGUE</strong>
             <a href="#servicos">Serviços</a>
+            <a href={projectsHref}>Projetos autorais</a>
             <a href={storeHref}>Loja</a>
             <a href="#processo">Processo</a>
             <a href="#sobre">Sobre</a>
@@ -1260,18 +1284,20 @@ function LandingPage() {
   )
 }
 
-function isStoreUrl(url: Pick<Location, "pathname" | "hash">) {
-  const basePath = import.meta.env.BASE_URL.replace(/\/+$/, "")
-  const currentPath = url.pathname.slice(basePath.length).replace(/\/+$/, "")
-  // Legacy links are still supported, but all current navigation uses /loja/.
-  return url.hash.startsWith("#/loja") || currentPath === "/loja"
+type SiteRoute = "home" | "store" | "projects"
+function routeFromUrl(url: Pick<Location, "pathname" | "hash">): SiteRoute {
+  const basePath = import.meta.env.BASE_URL.replace(/\\/+$/, "")
+  const currentPath = url.pathname.slice(basePath.length).replace(/\\/+$/, "")
+  if (url.hash.startsWith("#/loja") || currentPath === "/loja") return "store"
+  if (currentPath === "/projetos") return "projects"
+  return "home"
 }
-function isStoreRoute() {
-  return isStoreUrl(window.location)
+function currentRoute(): SiteRoute {
+  return routeFromUrl(window.location)
 }
 
 function App() {
-  const [isStore, setIsStore] = useState(isStoreRoute)
+  const [route, setRoute] = useState<SiteRoute>(currentRoute)
   const [contactRequest, setContactRequest] = useState<string | null>(null)
   const [transition, setTransition] = useState<"idle" | "out" | "in">("idle")
   const transitionRef = useRef<"idle" | "out" | "in">("idle")
@@ -1285,15 +1311,15 @@ function App() {
   navigateRef.current = (href: string) => {
     if (transitionRef.current !== "idle") return
     const target = new URL(href, location.href)
-    const toStore = isStoreUrl(target)
-    if (toStore === isStoreRoute()) {
+    const nextRoute = routeFromUrl(target)
+    if (nextRoute === currentRoute()) {
       // Keep normal in-page anchor behavior if no full route change is needed.
       location.assign(target.href)
       return
     }
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
       history.pushState({}, "", target.pathname + target.search + target.hash)
-      setIsStore(toStore)
+      setRoute(nextRoute)
       window.dispatchEvent(new Event("nexo:route-change"))
       window.scrollTo(0, 0)
       return
@@ -1303,13 +1329,13 @@ function App() {
     setTransition("out")
     timers.current.push(window.setTimeout(() => {
       history.pushState({}, "", target.pathname + target.search + target.hash)
-      setIsStore(toStore)
+      setRoute(nextRoute)
       window.dispatchEvent(new Event("nexo:route-change"))
       window.scrollTo(0, 0)
       transitionRef.current = "in"
       window.dispatchEvent(new CustomEvent("nexo:transition",{detail:"in"}))
       setTransition("in")
-      if (!toStore && target.hash && !target.hash.startsWith("#/")) {
+      if (nextRoute === "home" && target.hash && !target.hash.startsWith("#/")) {
         timers.current.push(window.setTimeout(() => {
           document.querySelector(target.hash)?.scrollIntoView({ behavior: "smooth" })
         }, 180))
@@ -1323,7 +1349,6 @@ function App() {
   }
 
   useEffect(() => {
-    // Upgrade bookmarked #/loja URLs without losing their destination.
     if (window.location.hash.startsWith("#/loja")) {
       const next = new URL(storeHref, window.location.origin)
       history.replaceState({}, "", next.pathname + next.search)
@@ -1332,7 +1357,7 @@ function App() {
       clearTimers()
       transitionRef.current = "idle"
       setTransition("idle")
-      setIsStore(isStoreRoute())
+      setRoute(currentRoute())
       window.dispatchEvent(new Event("nexo:route-change"))
     }
     const intercept = (event: MouseEvent) => {
@@ -1348,9 +1373,7 @@ function App() {
       if (!anchor || anchor.hasAttribute("download") || (anchor.target && anchor.target !== "_self")) return
       const next = new URL(anchor.href, window.location.href)
       if (next.origin !== window.location.origin) return
-      const fromStore = isStoreRoute()
-      const toStore = isStoreUrl(next)
-      if (fromStore === toStore) return
+      if (currentRoute() === routeFromUrl(next)) return
       event.preventDefault()
       navigateRef.current(next.href)
     }
@@ -1365,6 +1388,10 @@ function App() {
     }
   }, [])
 
+  useEffect(() => {
+    syncSeoHead(route)
+  }, [route])
+
   return (
     <>
       <MatterEngine />
@@ -1372,7 +1399,7 @@ function App() {
       <IntroSequence />
       <StudioNavigation />
       <SoundToggle />
-      {isStore ? <StorePage /> : <LandingPage />}
+      {route === "store" ? <StorePage /> : route === "projects" ? <AuthorialProjectsPage /> : <LandingPage />}
       {contactRequest && (
         <PurchaseForm
           packageName={contactRequest}
@@ -1380,8 +1407,8 @@ function App() {
           onClose={() => setContactRequest(null)}
         />
       )}
-      <KineticTypography key={isStore ? "store-typography" : "home-typography"} />
-      <PageDepth key={isStore ? "store-depth" : "home-depth"} />
+      <KineticTypography key={route + "-typography"} />
+      <PageDepth key={route + "-depth"} />
       <div className={`nexo-page-transition nexo-page-transition--${transition}`}
         role="presentation" aria-hidden="true">
         <div className="nexo-page-transition__surface" />

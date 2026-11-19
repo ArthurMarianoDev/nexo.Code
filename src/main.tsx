@@ -9,6 +9,7 @@ import "./immersive-v2.css"
 import "./motion-refinements.css"
 import "./beyond-interface.css"
 import "./matter-engine-v3.css"
+import "./authorial-projects.css"
 
 const root = document.getElementById("root")!
 const content = <React.StrictMode><App /></React.StrictMode>

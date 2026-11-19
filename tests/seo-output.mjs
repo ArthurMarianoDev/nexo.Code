@@ -6,7 +6,7 @@ import { join } from "node:path"
 const read = path => readFileSync(join(process.cwd(), path), "utf8")
 const home = read("dist/index.html")
 const shop = read("dist/loja/index.html")
-const base = "https://nexo-code.studiodigital.workers.dev"
+const base = "https://nexo-code.pages.dev"
 
 test("home and store have unique correct metadata and canonical URLs", () => {
   assert.match(home, /<title>Criação de Sites Profissionais e Landing Pages \| Nexo\.Code<\/title>/)

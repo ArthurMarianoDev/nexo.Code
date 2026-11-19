@@ -30,7 +30,7 @@ export default function CursorTrail() {
       w = innerWidth
       h = innerHeight
       // HiDPI backing resolution eliminates jagged / pixelated streaks.
-      const dpr = Math.min(devicePixelRatio || 1, 2.5)
+      const dpr = Math.min(devicePixelRatio || 1, 2.5, Math.sqrt(3800000 / Math.max(1, w * h)))
       const width = Math.round(w * dpr), height = Math.round(h * dpr)
       if (canvas.width !== width || canvas.height !== height) {
         canvas.width = width

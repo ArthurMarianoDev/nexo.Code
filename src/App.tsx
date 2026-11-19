@@ -850,7 +850,11 @@ function LandingPage() {
               <span>CHAPTER 02 — DESIGN AS LANGUAGE</span>
               <span>SCROLL TO REVEAL / N-C 003</span>
             </div>
-            <h2 id="studio-manifesto-title">Não criamos<br/><em>mais do mesmo.</em><br/>Criamos o <span>próximo.</span></h2>
+            <h2 id="studio-manifesto-title" className="studio-manifesto__title">
+              <span className="studio-manifesto__line">Não criamos</span>
+              <em className="studio-manifesto__line">mais do mesmo.</em>
+              <span className="studio-manifesto__line">Criamos o <strong>próximo.</strong></span>
+            </h2>
             <div className="studio-manifesto__bottom">
               <p>A tecnologia constrói a forma. A direção criativa dá significado. E cada interação faz a marca ganhar vida.</p>
               <span>INOVAÇÃO SEM RUÍDO. IMPACTO COM INTENÇÃO.</span>

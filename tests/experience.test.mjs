@@ -158,6 +158,32 @@ test("silk cursor uses smooth hiDPI vector paths with a safe pixel budget", () =
   assert.match(cursor,/devicePixelRatio/)
   assert.match(cursor,/3800000/)
   assert.match(cursor,/prefers-reduced-motion/)
-  assert.match(cursor,/pointer: fine/)
+  assert.match(cursor,/pointer:fine/)
   assert.match(cursor,/pointer-events:none|className="nexo-cursor-trail"/)
+})
+
+test("every prominent contact CTA opens the same purchase lead form", () => {
+  const calls = [...app.matchAll(/data-contact-form="/g)]
+  assert.equal(calls.length, 6, "Expected six unified lead CTA triggers across home and shop")
+  assert.match(app, /a\[data-contact-form\]/)
+  assert.match(app, /setContactRequest\(contactTrigger\.dataset\.contactForm/)
+  assert.match(app, /<PurchaseForm\s+packageName=\{contactRequest\}/)
+  assert.match(app, /general \? `Interesse:/)
+  assert.match(app, /general \? `Interesse: \$\{packageName\}` : `Pacote:/)
+  assert.match(app, /<PurchaseForm\s+packageName=\{selectedPackage\}/)
+  assert.match(app, /noopener,noreferrer/)
+})
+
+test("coalesced pointer events and dense interpolation prevent jagged cursor paths", () => {
+  const cursor = src("src/components/CursorTrail.tsx")
+  assert.match(cursor, /getCoalescedEvents/)
+  assert.match(cursor, /Math\.ceil\(distance \/ 2\.8\)/)
+  assert.match(cursor, /quadraticCurveTo/)
+  assert.match(cursor, /MAX_POINTS = 165/)
+  assert.match(cursor, /TRAIL_MS = 475/)
+  assert.match(cursor, /devicePixelRatio/)
+  assert.match(cursor, /3800000/)
+  assert.match(cursor, /prefers-reduced-motion:reduce/)
+  assert.match(cursor, /pointer:fine/)
+  assert.match(cursor, /visibilitychange/)
 })

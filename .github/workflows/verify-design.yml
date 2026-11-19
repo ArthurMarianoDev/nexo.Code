@@ -11,6 +11,7 @@ on:
       - security/harden-headers-privacy-audit-2026
       - feat/nexo-matter-engine-v3
       - fix/manifesto-type-and-silk-cursor
+      - fix/unified-contact-form-fluid-cursor-v4
   pull_request:
     branches:
       - main

@@ -11,7 +11,7 @@ import { createServer } from "vite"
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import { join } from "node:path"
 
-const ORIGIN = "https://nexo-code.studiodigital.workers.dev"
+const ORIGIN = "https://nexo-code.pages.dev"
 const HOME_URL = ORIGIN + "/"
 const SHOP_URL = ORIGIN + "/loja/"
 const LOGO = ORIGIN + "/social/nexo-profile.png"

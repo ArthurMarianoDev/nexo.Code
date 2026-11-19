@@ -158,7 +158,7 @@ test("silk cursor uses smooth hiDPI vector paths with a safe pixel budget", () =
   assert.match(cursor,/devicePixelRatio/)
   assert.match(cursor,/3800000/)
   assert.match(cursor,/prefers-reduced-motion/)
-  assert.match(cursor,/pointer:\\s*fine/)
+  assert.match(cursor,/pointer:fine/)
   assert.match(cursor,/pointer-events:none|className="nexo-cursor-trail"/)
 })
 

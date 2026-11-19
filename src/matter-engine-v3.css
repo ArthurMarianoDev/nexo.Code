@@ -156,3 +156,8 @@
 @media(max-width:350px){
   .studio-manifesto h2.studio-manifesto__title{font-size:6.6vw}
 }
+
+/* Remove the obsolete full-line underline; only the keyword receives the accent. */
+.studio-manifesto h2.studio-manifesto__title > span.studio-manifesto__line::after{content:none!important}
+.studio-manifesto h2.studio-manifesto__title > span.studio-manifesto__line{color:#0a1614}
+.studio-manifesto h2.studio-manifesto__title > span.studio-manifesto__line strong{color:#0f493b}

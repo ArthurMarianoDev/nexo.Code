@@ -1286,8 +1286,8 @@ function LandingPage() {
 
 type SiteRoute = "home" | "store" | "projects"
 function routeFromUrl(url: Pick<Location, "pathname" | "hash">): SiteRoute {
-  const basePath = import.meta.env.BASE_URL.replace(/\\/+$/, "")
-  const currentPath = url.pathname.slice(basePath.length).replace(/\\/+$/, "")
+  const basePath = import.meta.env.BASE_URL.replace(/[/]+$/, "")
+  const currentPath = url.pathname.slice(basePath.length).replace(/[/]+$/, "")
   if (url.hash.startsWith("#/loja") || currentPath === "/loja") return "store"
   if (currentPath === "/projetos") return "projects"
   return "home"

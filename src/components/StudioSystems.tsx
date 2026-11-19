@@ -85,7 +85,7 @@ export function StudioNavigation() {
     return()=>{document.body.style.overflow=old;document.removeEventListener("keydown",key)}
   },[open])
   const home=import.meta.env.BASE_URL
-  const sections=[["01","Início",home+"#inicio"],["02","Experiências",home+"#laboratorio"],["03","Serviços",home+"#servicos"],["04","A Nexo",home+"#sobre"],["05","Loja",home+"loja/"],["06","Contato",home+"#contato"]]
+  const sections=[["01","Início",home+"#inicio"],["02","Experiências",home+"#laboratorio"],["03","Serviços",home+"#servicos"],["04","A Nexo",home+"#sobre"],["05","Projetos",home+"projetos/"],["06","Loja",home+"loja/"],["07","Contato",home+"#contato"]]
   return <>
     <button ref={button} className="studio-menu-button" aria-label={open?"Fechar navegação imersiva":"Abrir navegação imersiva"}
       aria-expanded={open} aria-controls="studio-menu-panel" type="button" onClick={()=>setOpen(x=>!x)}>

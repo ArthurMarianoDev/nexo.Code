@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react"
 
 const homeHref = import.meta.env.BASE_URL
 const contactHref = `${homeHref}#contato`
-const storeHref = `${homeHref}#/loja`
+const storeHref = `${homeHref}loja/`
 const contactEmail = "nexocodebrasil@gmail.com"
 const whatsappUrl = "https://wa.me/5594991164544"
 
@@ -1219,12 +1219,14 @@ function LandingPage() {
   )
 }
 
-function isStoreRoute() {
+function isStoreUrl(url: Pick<Location, "pathname" | "hash">) {
   const basePath = import.meta.env.BASE_URL.replace(/\/+$/, "")
-  const currentPath = window.location.pathname
-    .slice(basePath.length)
-    .replace(/\/+$/, "")
-  return window.location.hash === "#/loja" || currentPath === "/loja"
+  const currentPath = url.pathname.slice(basePath.length).replace(/\/+$/, "")
+  // Legacy links are still supported, but all current navigation uses /loja/.
+  return url.hash.startsWith("#/loja") || currentPath === "/loja"
+}
+function isStoreRoute() {
+  return isStoreUrl(window.location)
 }
 
 function App() {
@@ -1242,7 +1244,7 @@ function App() {
   navigateRef.current = (href: string) => {
     if (transitionRef.current !== "idle") return
     const target = new URL(href, location.href)
-    const toStore = target.hash.startsWith("#/loja")
+    const toStore = isStoreUrl(target)
     if (toStore === isStoreRoute()) {
       // Keep normal in-page anchor behavior if no full route change is needed.
       location.assign(target.href)
@@ -1280,6 +1282,11 @@ function App() {
   }
 
   useEffect(() => {
+    // Upgrade bookmarked #/loja URLs without losing their destination.
+    if (window.location.hash.startsWith("#/loja")) {
+      const next = new URL(storeHref, window.location.origin)
+      history.replaceState({}, "", next.pathname + next.search)
+    }
     const syncRoute = () => {
       clearTimers()
       transitionRef.current = "idle"
@@ -1301,7 +1308,7 @@ function App() {
       const next = new URL(anchor.href, window.location.href)
       if (next.origin !== window.location.origin) return
       const fromStore = isStoreRoute()
-      const toStore = next.hash.startsWith("#/loja")
+      const toStore = isStoreUrl(next)
       if (fromStore === toStore) return
       event.preventDefault()
       navigateRef.current(next.href)

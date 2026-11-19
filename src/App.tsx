@@ -7,9 +7,50 @@ import { useEffect, useRef, useState } from "react"
 
 const homeHref = import.meta.env.BASE_URL
 const contactHref = `${homeHref}#contato`
-const storeHref = `${homeHref}#/loja`
+const storeHref = `${homeHref}loja/`
 const contactEmail = "nexocodebrasil@gmail.com"
 const whatsappUrl = "https://wa.me/5594991164544"
+
+const SEO_META = {
+  home: {
+    title: "Criação de Sites Profissionais e Landing Pages | Nexo.Code",
+    description: "Criação de sites profissionais, landing pages e experiências digitais exclusivas. Conheça os serviços da Nexo.Code e solicite um projeto.",
+    path: "",
+  },
+  shop: {
+    title: "Criação de Sites: Pacotes e Valores | Nexo.Code",
+    description: "Conheça os pacotes de criação de sites da Nexo.Code: Landing Essencial, Site Profissional e Experiência Premium. Confira valores e solicite proposta.",
+    path: "loja/",
+  },
+} as const
+
+function syncSeoHead(shop: boolean) {
+  const data = shop ? SEO_META.shop : SEO_META.home
+  const canonical = "https://nexo-code.studiodigital.workers.dev/" + data.path
+  document.title = data.title
+  const upsertMeta = (selector: string, attrs: Record<string, string>) => {
+    let node = document.head.querySelector<HTMLMetaElement>(selector)
+    if (!node) {
+      node = document.createElement("meta")
+      document.head.appendChild(node)
+    }
+    Object.entries(attrs).forEach(([name, value]) => node!.setAttribute(name, value))
+  }
+  upsertMeta('meta[name="description"]', { name: "description", content: data.description })
+  upsertMeta('meta[property="og:title"]', { property: "og:title", content: data.title })
+  upsertMeta('meta[property="og:description"]', { property: "og:description", content: data.description })
+  upsertMeta('meta[property="og:url"]', { property: "og:url", content: canonical })
+  upsertMeta('meta[name="twitter:title"]', { name: "twitter:title", content: data.title })
+  upsertMeta('meta[name="twitter:description"]', { name: "twitter:description", content: data.description })
+  let link = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+  if (!link) {
+    link = document.createElement("link")
+    link.rel = "canonical"
+    document.head.appendChild(link)
+  }
+  link.href = canonical
+}
+
 
 type IconName = "arrow" | "check" | "clock" | "code" | "design" | "growth" | "menu" | "shield" | "spark" | "x"
 
@@ -451,7 +492,7 @@ function StorePage() {
   useScrollReveal()
 
   useEffect(() => {
-    document.title = "Soluções e valores — Nexo.Code"
+    syncSeoHead(true)
     window.scrollTo(0, 0)
   }, [])
 
@@ -690,7 +731,7 @@ function LandingPage() {
   useScrollReveal()
 
   useEffect(() => {
-    document.title = "Nexo.Code — Sites profissionais e soluções digitais"
+    syncSeoHead(false)
     const onScroll = () => setScrolled(window.scrollY > 24)
     onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
@@ -1219,12 +1260,14 @@ function LandingPage() {
   )
 }
 
-function isStoreRoute() {
+function isStoreUrl(url: Pick<Location, "pathname" | "hash">) {
   const basePath = import.meta.env.BASE_URL.replace(/\/+$/, "")
-  const currentPath = window.location.pathname
-    .slice(basePath.length)
-    .replace(/\/+$/, "")
-  return window.location.hash === "#/loja" || currentPath === "/loja"
+  const currentPath = url.pathname.slice(basePath.length).replace(/\/+$/, "")
+  // Legacy links are still supported, but all current navigation uses /loja/.
+  return url.hash.startsWith("#/loja") || currentPath === "/loja"
+}
+function isStoreRoute() {
+  return isStoreUrl(window.location)
 }
 
 function App() {
@@ -1242,7 +1285,7 @@ function App() {
   navigateRef.current = (href: string) => {
     if (transitionRef.current !== "idle") return
     const target = new URL(href, location.href)
-    const toStore = target.hash.startsWith("#/loja")
+    const toStore = isStoreUrl(target)
     if (toStore === isStoreRoute()) {
       // Keep normal in-page anchor behavior if no full route change is needed.
       location.assign(target.href)
@@ -1280,6 +1323,11 @@ function App() {
   }
 
   useEffect(() => {
+    // Upgrade bookmarked #/loja URLs without losing their destination.
+    if (window.location.hash.startsWith("#/loja")) {
+      const next = new URL(storeHref, window.location.origin)
+      history.replaceState({}, "", next.pathname + next.search)
+    }
     const syncRoute = () => {
       clearTimers()
       transitionRef.current = "idle"
@@ -1301,7 +1349,7 @@ function App() {
       const next = new URL(anchor.href, window.location.href)
       if (next.origin !== window.location.origin) return
       const fromStore = isStoreRoute()
-      const toStore = next.hash.startsWith("#/loja")
+      const toStore = isStoreUrl(next)
       if (fromStore === toStore) return
       event.preventDefault()
       navigateRef.current(next.href)

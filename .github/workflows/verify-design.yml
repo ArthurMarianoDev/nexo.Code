@@ -12,6 +12,7 @@ on:
       - feat/nexo-matter-engine-v3
       - fix/manifesto-type-and-silk-cursor
       - fix/unified-contact-form-fluid-cursor-v4
+      - feat/seo-prerender-clean-routes
   pull_request:
     branches:
       - main
@@ -33,3 +34,5 @@ jobs:
         run: npm test
       - name: Production build
         run: npm run build
+      - name: SEO rendered HTML and sitemap verification
+        run: node --test tests/seo-output.mjs

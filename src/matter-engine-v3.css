@@ -120,3 +120,39 @@
  .matter-engine--fallback .matter-engine__fallback-art{filter:none}
  .package-morph__shape{transition:none!important}
 }
+
+
+/* Manifesto v3.1: editorial rhythm that cannot crop or overflow the viewport. */
+.studio-manifesto{overflow-x:clip;overflow-y:visible;min-width:0}
+.studio-manifesto__inner{min-width:0;width:100%;max-width:100%}
+.studio-manifesto h2.studio-manifesto__title{
+  width:100%;max-width:100%;min-width:0;box-sizing:border-box;
+  margin:clamp(32px,5vw,65px) 0 clamp(42px,6vw,80px);
+  font-family:"Space Grotesk",sans-serif;
+  font-size:clamp(2.45rem,7.15vw,7.9rem);
+  font-weight:500;line-height:1.08;letter-spacing:-.075em;
+  text-wrap:initial;overflow:visible;overflow-wrap:normal;
+  animation:none!important;clip-path:none!important;transform:none!important;
+  opacity:1!important;
+}
+.studio-manifesto__title .studio-manifesto__line{
+  display:block;max-width:100%;width:max-content;
+  line-height:1.12;overflow:visible;
+  white-space:nowrap;
+  font-weight:500;
+}
+.studio-manifesto__title em.studio-manifesto__line{color:#377c61}
+.studio-manifesto__title strong{font-weight:500;color:#0f493b;position:relative}
+.studio-manifesto__title strong::after{content:"";position:absolute;left:0;right:0;bottom:-.03em;height:clamp(2px,.38vw,5px);background:#67c59b;transform:skewX(-13deg)}
+@media(max-width:1100px){
+  .studio-manifesto h2.studio-manifesto__title{font-size:clamp(2.35rem,7.15vw,6.8rem)}
+}
+@media(max-width:800px){
+  .studio-manifesto h2.studio-manifesto__title{font-size:clamp(2.1rem,7.15vw,4.8rem);line-height:1.16}
+}
+@media(max-width:480px){
+  .studio-manifesto h2.studio-manifesto__title{font-size:clamp(1.8rem,7.1vw,3.2rem);letter-spacing:-.06em}
+}
+@media(max-width:350px){
+  .studio-manifesto h2.studio-manifesto__title{font-size:6.6vw}
+}

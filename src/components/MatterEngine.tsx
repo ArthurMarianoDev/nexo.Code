@@ -12,7 +12,7 @@ out vec2 uv;
 void main(){uv=aPosition*.5+.5;gl_Position=vec4(aPosition,0.,1.);}
 `
 
-const fragment = \`#version 300 es
+const fragment = `#version 300 es
 precision highp float;
 in vec2 uv;
 out vec4 outColor;
@@ -133,7 +133,7 @@ void main(){
   color+=(grain-.5)*.0045;
   outColor=vec4(pow(clamp(color,0.,1.),vec3(.94)),1.);
 }
-\`
+`
 
 type Chapter = {
   name: string

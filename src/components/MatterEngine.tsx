@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react"
 
 /**
- * Nexo Matter Engine 3.0.
- * A single original procedural sculpture persists across the entire experience.
- * The geometry, cinematic camera, material balance and lighting morph between
- * chapters, with one bounded WebGL2 canvas and a CSS-only fallback.
+ * Nexo DNA Matter Engine 4.0.
+ * A continuous procedural double-helix sculpture persists across the experience.
+ * The geometry, cinematic camera, material balance and lighting respond to
+ * chapters, with one bounded WebGL2 canvas and an accessible SVG fallback.
  */
 const vertex = `#version 300 es
 in vec2 aPosition;
@@ -12,7 +12,7 @@ out vec2 uv;
 void main(){uv=aPosition*.5+.5;gl_Position=vec4(aPosition,0.,1.);}
 `
 
-const fragment = `#version 300 es
+const fragment = \`#version 300 es
 precision highp float;
 in vec2 uv;
 out vec4 outColor;
@@ -27,107 +27,113 @@ uniform float uQuality;
 
 #define PI 3.14159265359
 mat2 rot(float a){float s=sin(a),c=cos(a);return mat2(c,-s,s,c);}
-float torus(vec3 p,vec2 t){return length(vec2(length(p.xz)-t.x,p.y))-t.y;}
-float smin(float a,float b,float k){float h=clamp(.5+.5*(b-a)/k,0.,1.);return mix(b,a,h)-k*h*(1.-h);}
-float form(vec3 p){
-  // The scene changes from closed orbital geometry to open liquid ribbons.
-  float sequence=smoothstep(0.,6.,uScene);
-  float lab=smoothstep(.3,1.6,uScene)*(1.-smoothstep(1.9,2.8,uScene));
-  float market=smoothstep(5.1,6.,uScene);
-  float time=uTime*.21;
-  p.xz*=rot(.26+uScroll*2.55+uPointer.x*.19+time*.21);
-  p.xy*=rot(-.17+uPointer.y*.17+uScroll*1.4);
-  p.yz*=rot(.5+sin(time*.53)*.14+uScene*.13);
-  float ring=torus(p,vec2(1.04+.07*sin(time+p.y*4.),.225));
-  vec3 q=p;
-  q.xy*=rot(.87+uScene*.2);
-  q.yz*=rot(1.28+.14*sin(time));
-  float ribbon=torus(q,vec2(.77+.08*sin(q.x*3.+time),.20));
-  vec3 r=p;
-  r.xz*=rot(-.72+uScene*.23);
-  r.yz*=rot(1.62);
-  float orbit=torus(r,vec2(.90,.15+.025*sin(5.*r.x-time)));
-  float blend=.28+lab*.36+market*.2;
-  float shape=smin(smin(ring,ribbon,blend),orbit,.23+sequence*.10);
-  // Evolving organic displacement, smooth to keep surface reflections stable.
-  float displacement=.035*sin(7.*p.x+time*1.2)*sin(6.*p.z-time*.9);
-  displacement+=.024*sin(p.y*12.+uScroll*12.)*sin(p.x*8.);
-  shape+=displacement*(.68+lab*.65);
-  // Store selections create three distinct sculptural silhouettes.
-  float landing=1.-smoothstep(.0,.55,uPackage);
-  float premium=smoothstep(1.4,2.,uPackage);
-  shape+=market*(landing*.055*sin(9.*p.y)+premium*.07*sin(10.*p.x+time));
-  return shape;
+float capsule(vec3 p,vec3 a,vec3 b,float r){
+  vec3 q=p-a,v=b-a;
+  return length(q-v*clamp(dot(q,v)/dot(v,v),0.,1.))-r;
 }
-vec3 getNormal(vec3 p){
+vec2 helixPoint(float y,float phase){
+  float a=y*4.72+phase;
+  float rad=.83+.018*sin(y*3.1+uTime*.37);
+  return rad*vec2(cos(a),sin(a));
+}
+vec3 twistSpace(vec3 p){
+  // A cinematic 3D pose, never a flat composited image.
+  p.xy*=rot(-.23+.09*sin(uTime*.17)+uPointer.y*.055);
+  p.yz*=rot(.14+uPointer.x*.045);
+  p.xz*=rot(.30+uTime*.19+uScroll*2.2+uPointer.x*.24);
+  return p;
+}
+vec3 dna(vec3 world){
+  vec3 p=twistSpace(world);
+  float phase=.08+sin(uTime*.29)*.14+uScene*.045;
+  float edge=abs(p.y)-1.69;
+  // Distance to two continuous twisted backbone tubes.
+  vec2 h1=helixPoint(p.y,phase);
+  vec2 h2=-h1;
+  float backboneA=max(length(p.xz-h1)-.059,edge);
+  float backboneB=max(length(p.xz-h2)-.059,edge);
+  // Base-pairs: individual fine cylindrical bridges, not a painted texture.
+  const float spacing=.225;
+  float rung=1e3;
+  float center=floor(p.y/spacing+.5);
+  for(int i=-1;i<=1;i++){
+    float y=(center+float(i))*spacing;
+    vec2 endPoint=helixPoint(y,phase);
+    float bar=capsule(p,vec3(endPoint.x,y,endPoint.y),vec3(-endPoint.x,y,-endPoint.y),.024);
+    rung=min(rung,max(bar,abs(y)-1.64));
+  }
+  // Slightly wider core of the backbone catches the luminous rim light.
+  float d=min(min(backboneA,backboneB),rung);
+  float material=backboneA<backboneB?1.:2.;
+  if(rung<min(backboneA,backboneB)) material=3.;
+  return vec3(d,material,p.y);
+}
+vec3 normalAt(vec3 p){
   vec2 e=vec2(.004,0.);
   return normalize(vec3(
-    form(p+e.xyy)-form(p-e.xyy),
-    form(p+e.yxy)-form(p-e.yxy),
-    form(p+e.yyx)-form(p-e.yyx)
+    dna(p+e.xyy).x-dna(p-e.xyy).x,
+    dna(p+e.yxy).x-dna(p-e.yxy).x,
+    dna(p+e.yyx).x-dna(p-e.yyx).x
   ));
 }
-float march(vec3 ro,vec3 rd,out vec3 position){
-  float t=.03;
-  for(int i=0;i<60;i++){
-    position=ro+rd*t;
-    float d=form(position);
-    if(d<.0038)return t;
-    t+=max(d*.66,.018);
-    if(t>9.5)break;
+float trace(vec3 ro,vec3 rd,out vec3 hit,out float material){
+  float t=.08;
+  for(int i=0;i<82;i++){
+    hit=ro+rd*t;
+    vec3 result=dna(hit);
+    if(result.x<.0035){material=result.y;return t;}
+    t+=max(result.x*.53,.011);
+    if(t>8.2)break;
   }
   return -1.;
 }
 void main(){
   vec2 p=(gl_FragCoord.xy-.5*uRes)/min(uRes.x,uRes.y);
-  vec2 mouse=uPointer;
-  // Camera dolly and slight orbit tell the same continuous scroll story.
-  float cameraPhase=uScroll*PI*1.6+uScene*.12;
-  vec3 camera=vec3(.26*sin(cameraPhase)+mouse.x*.22,.1+mouse.y*.15,4.3-.4*sin(uScroll*PI));
-  vec3 target=vec3(0.);
-  vec3 forward=normalize(target-camera);
+  vec3 camera=vec3(.13+uPointer.x*.15,.05-uPointer.y*.11,4.55-.17*sin(uScroll*PI));
+  vec3 forward=normalize(-camera);
   vec3 right=normalize(cross(forward,vec3(0.,1.,0.)));
   vec3 up=cross(right,forward);
-  vec3 direction=normalize(forward*2.28+right*p.x+up*p.y);
-  vec3 hitPosition=vec3(0.);
-  float hit=march(camera,direction,hitPosition);
-  float sceneMood=smoothstep(1.0,4.5,uScene);
-  vec3 graphite=vec3(.026,.048,.054);
-  vec3 background=mix(graphite,vec3(.025,.075,.066),clamp(uv.y*.75+.1,0.,1.));
-  background+=vec3(.011,.022,.018)*sin(p.x*4.+uTime*.12);
-  vec3 finalColor=background;
+  vec3 ray=normalize(forward*2.1+right*p.x+up*p.y);
+  vec3 pos=vec3(0.);
+  float material=0.;
+  float hit=trace(camera,ray,pos,material);
+
+  vec3 background=mix(vec3(.010,.020,.028),vec3(.018,.047,.049),clamp(uv.y*.85,0.,1.));
+  background+=vec3(.009,.018,.015)*exp(-dot(p-vec2(.05,.06),p-vec2(.05,.06))*3.3);
+  vec3 color=background;
   if(hit>0.){
-    vec3 n=getNormal(hitPosition);
-    vec3 view=normalize(camera-hitPosition);
-    vec3 keyLight=normalize(vec3(-.6,.83,1.4)+vec3(mouse*.24,0.));
-    vec3 rimLight=normalize(vec3(.9,-.55,-.25));
-    float lit=max(dot(n,keyLight),0.);
-    float cool=max(dot(n,rimLight),0.);
-    float fresnel=pow(1.-clamp(dot(n,view),0.,1.),3.4);
-    float halfSpec=pow(max(dot(reflect(-keyLight,n),view),0.),51.);
-    float wideSpec=pow(max(dot(reflect(-rimLight,n),view),0.),13.);
-    float groove=.5+.5*sin(hitPosition.y*4.9+hitPosition.x*3.3+uTime*.15);
-    vec3 green=vec3(.71,1.,.29);
-    vec3 cyan=vec3(.40,.85,1.);
-    vec3 tint=mix(cyan,green,smoothstep(.14,.9,groove+sceneMood*.10));
-    // Pseudo-transmission across a semi-opaque material with volumetric rim.
-    float transmission=pow(1.-abs(dot(n,view)),1.8);
-    vec3 interior=mix(vec3(.025,.095,.103),tint*.42,lit*.5+.2);
-    vec3 reflection=vec3(.93,1.,.86)*halfSpec*1.25+cyan*wideSpec*.38;
-    finalColor=interior*(.28+lit*.96)+tint*fresnel*1.04+
-      reflection+cyan*cool*.13+tint*transmission*.38;
-    finalColor+=vec3(.26,.55,.40)*pow(max(dot(n,vec3(.0,-1.,.0)),0.),3.)*.19;
-    finalColor=finalColor/(finalColor+vec3(.66));
+    vec3 n=normalAt(pos);
+    vec3 view=normalize(camera-pos);
+    vec3 key=normalize(vec3(-.68,.95,1.4)+vec3(uPointer*.12,0.));
+    vec3 fill=normalize(vec3(1.0,-.3,-.8));
+    float diffuse=max(dot(n,key),0.);
+    float fillLight=max(dot(n,fill),0.);
+    float fresnel=pow(1.-clamp(dot(n,view),0.,1.),2.3);
+    float spec=pow(max(dot(reflect(-key,n),view),0.),42.);
+    float softSpec=pow(max(dot(reflect(-fill,n),view),0.),17.);
+
+    vec3 cyan=vec3(.28,.84,1.);
+    vec3 lime=vec3(.68,1.,.26);
+    vec3 bridge=vec3(.36,.83,.77);
+    float gradient=smoothstep(-1.55,1.53,pos.y+.3*sin(uTime*.28));
+    vec3 tint=material>2.5?bridge:(material<1.5?mix(cyan,lime,gradient*.9):mix(lime,cyan,gradient*.78));
+    float metallic=material>2.5?.65:1.;
+    vec3 shadow=tint*(.10+.52*diffuse+.18*fillLight);
+    vec3 lit=shadow+tint*fresnel*(.92*metallic)+vec3(.8,1.,.94)*spec*.8+cyan*softSpec*.16;
+    // Restrained emission, more intense on the outer strands than the rungs.
+    lit+=tint*(material>2.5?.17:.30);
+    float fog=1.-exp(-hit*.012);
+    color=mix(lit/(lit+vec3(.38)),background,clamp(fog,0.,.3));
   }
-  float atmosphericGlow=exp(-length(p-vec2(.08,-.01))*2.65)*.035;
-  finalColor+=vec3(.20,.72,.53)*atmosphericGlow;
-  float filmGrain=fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453);
-  finalColor+=(filmGrain-.5)*.009;
-  // A transition becomes a sculptural light event, not just a flat overlay.
-  finalColor+=vec3(.1,.17,.07)*uTransition*.32;
-  outColor=vec4(pow(clamp(finalColor,0.,1.),vec3(.91)),1.);
+  // Subtle optical bloom, staying dark enough for readable editorial typography.
+  float aurora=exp(-dot(p-vec2(.12,.0),p-vec2(.12,.0))*2.25);
+  color+=mix(vec3(.014,.065,.072),vec3(.033,.09,.038),.5+.5*sin(uTime*.15))*aurora*.34;
+  color+=vec3(.06,.13,.055)*uTransition*.23;
+  float grain=fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453);
+  color+=(grain-.5)*.0045;
+  outColor=vec4(pow(clamp(color,0.,1.),vec3(.94)),1.);
 }
-`
+\`
 
 type Chapter = {
   name: string
@@ -210,8 +216,8 @@ export default function MatterEngine(){
     }
     const resize=()=>{
       const rect=canvas.getBoundingClientRect()
-      const dpr=Math.min(devicePixelRatio||1,reduceQuality?1:1.35)
-      const cap=reduceQuality?480:850
+      const dpr=Math.min(devicePixelRatio||1,reduceQuality?1:1.5)
+      const cap=reduceQuality?520:1050
       const ratio=Math.min(1,cap/Math.max(1,rect.width*dpr))
       const width=Math.max(2,Math.floor(rect.width*dpr*ratio))
       const height=Math.max(2,Math.floor(rect.height*dpr*ratio))
@@ -296,7 +302,7 @@ export default function MatterEngine(){
 
   return <div className={`matter-engine ${fallback?"matter-engine--fallback":""}`} ref={rootRef} data-chapter="hero" aria-hidden="true">
     <canvas ref={canvasRef}/>
-    <div className="matter-engine__fallback-art"><span/><span/><span/></div>
-    <div className="matter-engine__annotation">N/C — MATTER ENGINE 003</div>
+    <div className="matter-engine__fallback-art"><svg viewBox="0 0 340 540" role="presentation" focusable="false"><defs><linearGradient id="dna-backbone" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#86d9ff"/><stop offset="100%" stopColor="#b9ff4f"/></linearGradient></defs>{Array.from({length:23},(_,i)=>{const y=35+i*21;const t=i*.39;const x=170+90*Math.sin(t);return <line key={i} x1={x} y1={y} x2={340-x} y2={y} stroke="#73dfd7" strokeWidth="3" opacity=".65"/>})}<path d={Array.from({length:125},(_,i)=>{const y=12+i*4.2;return `${i===0?"M":"L"} ${170+90*Math.sin(i*.088)} ${y}`}).join(" ")} fill="none" stroke="url(#dna-backbone)" strokeWidth="8" strokeLinecap="round"/><path d={Array.from({length:125},(_,i)=>{const y=12+i*4.2;return `${i===0?"M":"L"} ${170-90*Math.sin(i*.088)} ${y}`}).join(" ")} fill="none" stroke="url(#dna-backbone)" strokeWidth="8" strokeLinecap="round"/></svg></div>
+    <div className="matter-engine__annotation">N/C — DNA ENGINE 004</div>
   </div>
 }

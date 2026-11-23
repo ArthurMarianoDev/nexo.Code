@@ -56,3 +56,10 @@
 .authorial-project__visual--cyan .authorial-project__art-orbit{border-color:rgba(151,229,237,.32);border-radius:24%;transform:rotate(35deg) skew(-6deg)}
 .authorial-project__visual--cyan .authorial-project__art-orbit--two{width:44%;transform:rotate(-35deg) skew(6deg)}
 .authorial-project__visual--cyan .authorial-project__art-caption{color:#c2ebee}
+
+/* Screenshot banners retain their original wide composition rather than crop the site's hero typography. */
+.authorial-project__visual--has-cover{aspect-ratio:1888/904;min-height:0;align-self:start}
+.authorial-project__visual--has-cover>img{object-fit:contain;object-position:center;background:#0d1211}
+.authorial-project__visual--has-cover:after{background:none}
+@media(max-width:900px){.authorial-project__visual--has-cover{aspect-ratio:1888/904;min-height:0}}
+@media(max-width:620px){.authorial-project__visual--has-cover{aspect-ratio:1888/904;min-height:0}}

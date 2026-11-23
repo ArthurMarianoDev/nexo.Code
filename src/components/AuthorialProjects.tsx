@@ -2,7 +2,7 @@ import { authorialProjects } from "../data/projects"
 
 const root = import.meta.env.BASE_URL
 
-function ProjectVisual({ index, cover, tone, name }: { index: number; cover: string | null; tone: string; name: string }) {
+function ProjectVisual({ index, cover, tone, name, slug }: { index: number; cover: string | null; tone: string; name: string; slug: string }) {
   return (
     <div className={`authorial-project__visual authorial-project__visual--${tone}`}>
       {cover ? (
@@ -11,8 +11,8 @@ function ProjectVisual({ index, cover, tone, name }: { index: number; cover: str
         <div className="authorial-project__art" aria-hidden="true">
           <span className="authorial-project__art-orbit authorial-project__art-orbit--one" />
           <span className="authorial-project__art-orbit authorial-project__art-orbit--two" />
-          <span className="authorial-project__art-monogram">A<span>·</span></span>
-          <span className="authorial-project__art-caption">PRIVATE COLLECTION <i /> ARCHITECTURAL LIVING</span>
+          <span className="authorial-project__art-monogram">{slug === "volterra" ? "V" : "A"}<span>·</span></span>
+          <span className="authorial-project__art-caption">{slug === "volterra" ? "SMART ESSENTIALS" : "PRIVATE COLLECTION"} <i /> {slug === "volterra" ? "REFINED TECHNOLOGY" : "ARCHITECTURAL LIVING"}</span>
         </div>
       )}
       <span className="authorial-project__number">{String(index + 1).padStart(2, "0")} / {String(authorialProjects.length).padStart(2, "0")}</span>
@@ -50,7 +50,7 @@ export function AuthorialProjectsPage() {
           <div className="authorial-projects">
             {authorialProjects.map((project, index) => (
               <article className="authorial-project" key={project.slug}>
-                <ProjectVisual index={index} cover={project.cover} tone={project.tone} name={project.name} />
+                <ProjectVisual index={index} cover={project.cover} tone={project.tone} name={project.name} slug={project.slug} />
                 <div className="authorial-project__details">
                   <div className="authorial-project__metadata">
                     <span>{project.eyebrow}</span><span>{project.year}</span>

@@ -31,7 +31,7 @@ export const authorialProjects: AuthorialProject[] = [
     services: ["Direção de arte", "Catálogo e filtros", "React + Supabase"],
     stage: "published",
     liveUrl: "https://aurea-residences-6s0.pages.dev/",
-    cover: null,
+    cover: "/projects/aurea-residences-banner.webp",
     tone: "champagne",
   },
   {

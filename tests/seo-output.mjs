@@ -36,7 +36,7 @@ test("both route documents ship real SSR content before any JavaScript", () => {
   assert.match(projects, /AUREA RESIDENCES/)
   assert.match(projects, /VOLTÉRRA/)
   assert.match(projects, /E-commerce de eletrônicos/)
-  assert.match(projects, /https:\\/\\/aurea-residences-6s0\\.pages\\.dev\\//)
+  assert.ok(projects.includes("https://aurea-residences-6s0.pages.dev/"))
   assert.match(home, /O digital não/)
   assert.match(shop, /Landing Essencial/)
   assert.match(shop, /Site Profissional/)

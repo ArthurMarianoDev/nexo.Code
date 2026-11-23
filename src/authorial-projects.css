@@ -48,3 +48,11 @@
 @media(max-width:900px){.authorial-header__edition{display:none}.authorial-project{grid-template-columns:1fr;gap:30px}.authorial-project__visual{aspect-ratio:1.3}.authorial-project__details{gap:32px}.authorial-project__visual-label{display:none}.authorial-collection{padding-top:40px}}
 @media(max-width:620px){.authorial-header{height:76px}.authorial-header__back{font-size:9px;letter-spacing:0}.authorial-header__back span{margin-left:5px}.authorial-intro{min-height:680px;padding-top:110px;padding-bottom:80px}.authorial-intro__topline{font-size:8px}.authorial-intro__topline>span:last-child{display:none}.authorial-intro h1{font-size:clamp(48px,13vw,77px)}.authorial-intro__foot{display:block;margin-top:45px}.authorial-intro__explore{display:inline-flex;margin-top:32px}.authorial-collection__heading{align-items:start;flex-direction:column}.authorial-project__visual{min-height:290px;aspect-ratio:1}.authorial-project__art-monogram{font-size:160px}.authorial-project__art-caption{font-size:7px}.authorial-project__details h3{font-size:40px}.authorial-outro>div{align-items:start;flex-direction:column}.authorial-outro h2{font-size:50px}.authorial-bottom{flex-wrap:wrap}.authorial-bottom .brand{flex-basis:100%}}
 @media(prefers-reduced-motion:reduce){.authorial-project__visual>img{transition:none!important}}
+
+/* VOLTÉRRA gets an independent cyan technology signature rather than AUREA's art. */
+.authorial-project__visual--cyan .authorial-project__art{background:radial-gradient(ellipse at 54% 52%,rgba(130,220,239,.2),transparent 47%),repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 68px)}
+.authorial-project__visual--cyan .authorial-project__art-monogram{font-family:var(--font-display);font-weight:700;letter-spacing:-.12em;color:#c7eff5}
+.authorial-project__visual--cyan .authorial-project__art-monogram span{color:#68d8ea}
+.authorial-project__visual--cyan .authorial-project__art-orbit{border-color:rgba(151,229,237,.32);border-radius:24%;transform:rotate(35deg) skew(-6deg)}
+.authorial-project__visual--cyan .authorial-project__art-orbit--two{width:44%;transform:rotate(-35deg) skew(6deg)}
+.authorial-project__visual--cyan .authorial-project__art-caption{color:#c2ebee}

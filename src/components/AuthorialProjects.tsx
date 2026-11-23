@@ -4,7 +4,7 @@ const root = import.meta.env.BASE_URL
 
 function ProjectVisual({ index, cover, tone, name, slug }: { index: number; cover: string | null; tone: string; name: string; slug: string }) {
   return (
-    <div className={`authorial-project__visual authorial-project__visual--${tone}`}>
+    <div className={`authorial-project__visual authorial-project__visual--${tone}${cover ? " authorial-project__visual--has-cover" : ""}`}>
       {cover ? (
         <img src={`${root}${cover.replace(/^\//, "")}`} alt={`Prévia do projeto ${name}`} loading="lazy" decoding="async" />
       ) : (
